@@ -1,10 +1,11 @@
 import React from 'react';
 import { Card } from './components/card';
 import { TransactionList } from './components/transaction-list';
+import { Layout } from './components/layout';
 
 function App() {
   return (
-    <div><Card balance={5756.00} cardHolder={'Eddy Cusuma'} number={'3778 **** **** 1234'} expiryDate={'12/22'} /><TransactionList transactions={[
+    <div><Layout><Card balance={5756.00} cardHolder={'Eddy Cusuma'} number={'3778 **** **** 1234'} expiryDate={'12/22'} /><TransactionList transactions={[
       {
         id: '1',
         description: 'Deposit from my Card',
@@ -29,7 +30,7 @@ function App() {
         type: 'credit',
         category: 'Transfer',
       },
-    ]} /></div>
+    ]} /></Layout></div>
   );
 }
 
