@@ -2,6 +2,8 @@
 
 A modern, responsive financial dashboard built with React, TypeScript, and Tailwind CSS.
 
+## Live Demo
+Check out the live demo at [https://dashboard-app-two-phi.vercel.app/](https://dashboard-app-two-phi.vercel.app/)
 
 ## Tech Stack
 
