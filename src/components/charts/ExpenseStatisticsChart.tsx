@@ -37,7 +37,7 @@ const ExpenseStatisticsChart = ({ data }: ExpenseStatisticsChartProps) => {
                                 ctx.fillStyle = '#fff';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
-                                const label = `${value}% ${data.labels[index]}`;
+                                const label = `${value}% ${data.labels ? data.labels[index] : 'N/A'}`;
                                 ctx.fillText(label, x, y);
 
                                 currentAngle += (value / total) * 2 * Math.PI;

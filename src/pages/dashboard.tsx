@@ -235,7 +235,7 @@ const Dashboard = () => {
                       ctx.fillStyle = '#fff';
                       ctx.textAlign = 'center';
                       ctx.textBaseline = 'middle';
-                      const label = `${value}% ${data.labels[index]}`;
+                      const label = `${value}% ${data?.labels?.[index]}`;
                       ctx.fillText(label, x, y);
 
                       currentAngle += sliceAngle;
