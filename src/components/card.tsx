@@ -1,4 +1,4 @@
-import { cn } from '../lib/utils';
+import { cn } from '../helpers/utils';
 
 interface CardProps {
   balance: number;
@@ -28,7 +28,7 @@ export function Card({ balance, cardHolder, number, expiryDate, variant = 'dark'
         </div>
 
         <div className="mt-auto">
-          <p 
+          <p
             className={cn(
               'text-lg tracking-[0.25rem] mb-6',
               variant === 'dark' ? 'text-white' : 'text-gray-900'
@@ -37,7 +37,7 @@ export function Card({ balance, cardHolder, number, expiryDate, variant = 'dark'
           >
             {number}
           </p>
-          
+
           <div className="flex justify-between items-end">
             <div>
               <p className={cn(
@@ -57,7 +57,7 @@ export function Card({ balance, cardHolder, number, expiryDate, variant = 'dark'
         </div>
       </div>
 
-      <div 
+      <div
         className="absolute top-6 right-6 flex gap-1"
         aria-hidden="true"
       >
