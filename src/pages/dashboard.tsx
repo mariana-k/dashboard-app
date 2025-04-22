@@ -36,7 +36,7 @@ ChartJS.register(
   Filler
 );
 
-export function Dashboard() {
+const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -313,4 +313,6 @@ export function Dashboard() {
       </div>
     </div>
   );
-}
+};
+
+export default Dashboard;

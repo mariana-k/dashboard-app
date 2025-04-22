@@ -16,7 +16,7 @@ const Loading = () => (
   </div>
 );
 
-function App() {
+const App = () => {
   return (
     <ErrorBoundary>
       <Router>
@@ -33,6 +33,6 @@ function App() {
       </Router>
     </ErrorBoundary>
   );
-}
+};
 
 export default App;

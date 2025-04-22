@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Card } from '../components/card';
 import { fetchCards } from '../lib/api';
 
-export function Cards() {
+const Cards = () => {
   const { data: cards } = useQuery({
     queryKey: ['cards'],
     queryFn: fetchCards,
@@ -28,4 +28,6 @@ export function Cards() {
       </div>
     </div>
   );
-}
+};
+
+export default Cards;
