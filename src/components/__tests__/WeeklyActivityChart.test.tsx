@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { WeeklyActivityChart } from '../charts/WeeklyActivityChart';
+import React from 'react';
 
 // Mock react-chartjs-2
 jest.mock('react-chartjs-2', () => ({

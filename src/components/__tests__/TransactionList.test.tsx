@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { TransactionList } from '../TransactionList';
+import React from 'react';
 
 const mockTransactions = [
   {
