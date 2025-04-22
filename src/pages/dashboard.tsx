@@ -16,9 +16,10 @@ import {
   Filler,
 } from 'chart.js';
 import { Bar, Pie } from 'react-chartjs-2';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { Card } from '../components/card';
 import { TransactionList } from '../components/transaction-list';
-import { fetchCards, fetchTransactions } from '../lib/api';
+import { fetchCards, fetchTransactions, fetchUsers } from '../lib/api';
 import { chartColors, barChartOptions, pieChartOptions } from '../lib/chart-theme';
 
 ChartJS.register(
@@ -36,7 +37,7 @@ ChartJS.register(
 );
 
 export function Dashboard() {
-  const [currentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -52,6 +53,24 @@ export function Dashboard() {
     queryKey: ['transactions'],
     queryFn: fetchTransactions,
   });
+
+  const { data: quickTransferContacts } = useQuery({
+    queryKey: ['users'],
+    queryFn: fetchUsers,
+    select: (users) => users.map(user => ({
+      id: user.id,
+      name: user.name,
+      role: 'User',
+      avatar: user.avatar,
+    })),
+  });
+
+  const displayedContacts = quickTransferContacts
+    ? quickTransferContacts.slice(currentPage * 3, (currentPage * 3) + 3)
+    : [];
+
+  const hasNextPage = quickTransferContacts && currentPage * 3 + 3 < quickTransferContacts.length;
+  const hasPrevPage = currentPage > 0;
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -96,6 +115,7 @@ export function Dashboard() {
     categoryPercentage: 0.8,
     barPercentage: 0.5,
   };
+
   const expenseData = {
     labels: ['Entertainment', 'Bill Expense', 'Investment', 'Others'],
     datasets: [
@@ -113,6 +133,8 @@ export function Dashboard() {
       },
     ],
   };
+
+
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -209,6 +231,60 @@ export function Dashboard() {
                   }
                 }]}
               />
+            </div>
+          </div>
+        </div>
+        {/* Quick Transfer Section */}
+        <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+          <h2 className="text-lg md:text-xl font-semibold mb-4">Quick Transfer</h2>
+          <div className="space-y-6">
+            <div className="flex items-center gap-4">
+              {displayedContacts.map((contact) => (
+                <button key={contact.id} className="flex flex-col items-center gap-1">
+                  <img
+                    src={contact.avatar}
+                    alt={contact.name}
+                    className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover"
+                  />
+                  <div className="text-center">
+                    <p className="text-xs md:text-sm font-medium">{contact.name}</p>
+                    <p className="text-xs text-gray-500">{contact.role}</p>
+                  </div>
+                </button>
+              ))}
+              <div className="flex gap-2">
+                {hasPrevPage && (
+                  <button
+                    onClick={() => setCurrentPage(prev => prev - 1)}
+                    className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    aria-label="Show previous contacts"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-gray-600" />
+                  </button>
+                )}
+                {hasNextPage && (
+                  <button
+                    onClick={() => setCurrentPage(prev => prev + 1)}
+                    className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    aria-label="Show next contacts"
+                  >
+                    <ChevronRight className="w-5 h-5 text-gray-600" />
+                  </button>
+                )}
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Write Amount"
+                className="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
+              />
+              <button className="px-4 md:px-6 py-2 bg-gray-900 text-white rounded-lg flex items-center gap-2 text-sm md:text-base">
+                Send
+                <span className="rotate-45">
+                  <ChevronRight className="w-4 h-4" />
+                </span>
+              </button>
             </div>
           </div>
         </div>
