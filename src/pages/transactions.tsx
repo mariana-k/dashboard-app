@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchTransactions } from '../lib/api';
 import { TransactionList } from '../components/transaction-list';
 
-export function Transactions() {
+const Transactions = () => {
   const { data: transactions, isLoading } = useQuery({
     queryKey: ['transactions'],
     queryFn: fetchTransactions,
@@ -24,4 +24,6 @@ export function Transactions() {
       {transactions && <TransactionList transactions={transactions} />}
     </div>
   );
-}
+};
+
+export default Transactions;
