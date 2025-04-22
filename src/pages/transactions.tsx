@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchTransactions } from '../lib/api';
-import { TransactionList } from '../components/transaction-list';
+import { fetchTransactions } from '../helpers/api';
+import { TransactionList } from '../components/TransactionList';
 
 const Transactions = () => {
   const { data: transactions, isLoading } = useQuery({

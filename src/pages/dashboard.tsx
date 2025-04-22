@@ -17,10 +17,10 @@ import {
 } from 'chart.js';
 import { Bar, Pie, Line } from 'react-chartjs-2';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
-import { Card } from '../components/card';
-import { TransactionList } from '../components/transaction-list';
-import { fetchCards, fetchTransactions, fetchUsers } from '../lib/api';
-import { chartColors, barChartOptions, lineChartOptions, pieChartOptions } from '../lib/chart-theme';
+import { Card } from '../components/Card';
+import { TransactionList } from '../components/TransactionList';
+import { fetchCards, fetchTransactions, fetchUsers } from '../helpers/api';
+import { chartColors, barChartOptions, lineChartOptions, pieChartOptions } from '../helpers/chart-theme';
 
 ChartJS.register(
   CategoryScale,

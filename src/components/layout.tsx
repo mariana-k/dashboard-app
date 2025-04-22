@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { cn } from '../lib/utils';
+import { cn } from '../helpers/utils';
 import {
   LayoutDashboard,
   Settings as SettingsIcon,
@@ -14,7 +14,7 @@ import {
   Menu,
   X,
 } from 'lucide-react';
-import { Header } from './header';
+import { Header } from './Header';
 import { profileImageState } from '../store/atoms';
 import { useState } from 'react';
 

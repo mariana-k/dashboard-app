@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { Card } from '../components/card';
-import { fetchCards } from '../lib/api';
+import { Card } from '../components/Card';
+import { fetchCards } from '../helpers/api';
 
 const Cards = () => {
   const { data: cards } = useQuery({
