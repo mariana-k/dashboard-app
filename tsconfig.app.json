@@ -14,7 +14,9 @@
         "isolatedModules": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "allowJs": true,
+        "strict": true
     },
     "include": [
         "src"
