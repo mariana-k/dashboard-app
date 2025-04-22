@@ -15,12 +15,12 @@ import {
   Legend,
   Filler,
 } from 'chart.js';
-import { Bar, Pie } from 'react-chartjs-2';
+import { Bar, Pie, Line } from 'react-chartjs-2';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { Card } from '../components/card';
 import { TransactionList } from '../components/transaction-list';
 import { fetchCards, fetchTransactions, fetchUsers } from '../lib/api';
-import { chartColors, barChartOptions, pieChartOptions } from '../lib/chart-theme';
+import { chartColors, barChartOptions, lineChartOptions, pieChartOptions } from '../lib/chart-theme';
 
 ChartJS.register(
   CategoryScale,
@@ -134,7 +134,19 @@ export function Dashboard() {
     ],
   };
 
-
+  const balanceHistoryData = {
+    labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+    datasets: [
+      {
+        label: 'Balance',
+        data: [200, 400, 300, 750, 250, 400, 600],
+        borderColor: chartColors.primary,
+        backgroundColor: `${chartColors.primary}1A`,
+        fill: true,
+        tension: 0.4,
+      },
+    ],
+  };
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -193,6 +205,7 @@ export function Dashboard() {
             <Bar data={weeklyActivityData} options={customBarChartOptions} />
           </div>
         </div>
+
         {/* Expense Statistics Section */}
         <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
           <h2 className="text-lg md:text-xl font-semibold mb-4">Expense Statistics</h2>
@@ -234,6 +247,7 @@ export function Dashboard() {
             </div>
           </div>
         </div>
+
         {/* Quick Transfer Section */}
         <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
           <h2 className="text-lg md:text-xl font-semibold mb-4">Quick Transfer</h2>
@@ -286,6 +300,14 @@ export function Dashboard() {
                 </span>
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* Balance History Section */}
+        <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+          <h2 className="text-lg md:text-xl font-semibold mb-4">Balance History</h2>
+          <div className="h-[300px] md:h-[400px]">
+            <Line data={balanceHistoryData} options={lineChartOptions} />
           </div>
         </div>
       </div>
