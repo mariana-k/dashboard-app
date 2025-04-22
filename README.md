@@ -170,15 +170,22 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
 
 #### Deploy
 
-1. Push to main branch:
+1. Create a Pull Request to main branch:
    ```bash
-   git push origin main
+   git checkout -b feature/your-feature
+   # Make your changes
+   git add .
+   git commit -m "Your changes"
+   git push origin feature/your-feature
    ```
+   Then create a PR on GitHub from your feature branch to main.
 
-The GitHub Actions workflow will:
-1. Build the Docker image
-2. Push it to ECR
-3. Deploy to ECS
+2. Review and merge the PR:
+   - The deployment will automatically start when the PR is merged to main
+   - The GitHub Actions workflow will:
+     1. Build the Docker image
+     2. Push it to ECR
+     3. Deploy to ECS
 
 Your app will be available at your EC2 instance's public IP.
 
