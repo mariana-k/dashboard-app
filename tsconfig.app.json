@@ -7,8 +7,8 @@
             "dom.iterable",
             "esnext"
         ],
-        "module": "esnext",
-        "target": "esnext",
+        "module": "ESNext",
+        "target": "ESNext",
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "isolatedModules": true,
@@ -16,9 +16,20 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "allowJs": true,
-        "strict": true
+        "strict": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        }
     },
     "include": [
         "src"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.test.ts",
+        "**/*.test.tsx"
     ]
 }
