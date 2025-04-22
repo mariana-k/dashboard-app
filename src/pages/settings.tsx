@@ -6,6 +6,7 @@ import { Camera, Bell, Lock, Palette } from 'lucide-react';
 import { useRecoilState } from 'recoil';
 import { cn } from '../lib/utils';
 import { profileImageState } from '../store/atoms';
+import OptimizedImage from '../components/OptimizedImage';
 
 const settingsSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -120,10 +121,13 @@ const Settings = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl">
             <div className="mb-8">
               <div className="relative inline-block">
-                <img
+                <OptimizedImage
                   src={profileImage}
                   alt="Profile"
-                  className="w-24 h-24 rounded-full object-cover"
+                  width={96}
+                  height={96}
+                  className="rounded-full object-cover"
+                  priority
                 />
                 <button
                   type="button"
