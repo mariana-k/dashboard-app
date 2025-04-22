@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { Card } from '../Card';
+import React from 'react';
 
 describe('Card Component', () => {
   const defaultProps = {
