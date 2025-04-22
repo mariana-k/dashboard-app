@@ -1,36 +1,36 @@
-import { cn } from '../lib/helpers/utils';
-import { Banknote, CreditCard, User } from 'lucide-react';
-import { formatCurrency, formatDate, getTransactionIcon } from '../lib/helpers/utils';
+import { cn } from '../lib/helpers/utils'
+import { Banknote, CreditCard, User } from 'lucide-react'
+import { formatCurrency, formatDate, getTransactionIcon } from '../lib/helpers/utils'
 
 type TransactionListProps = {
-  transactions: Transaction[];
+  transactions: Transaction[]
 }
 
 type Transaction = {
-  id: string;
-  description: string;
-  amount: number;
-  date: string;
-  type: 'credit' | 'debit';
-  category: string;
+  id: string
+  description: string
+  amount: number
+  date: string
+  type: 'credit' | 'debit'
+  category: string
 }
 
 export function TransactionList({ transactions }: TransactionListProps) {
   const getIcon = (description: string) => {
-    const iconType = getTransactionIcon(description);
+    const iconType = getTransactionIcon(description)
     switch (iconType) {
       case 'card':
-        return <CreditCard className="w-4 h-4 md:w-5 md:h-5 text-blue-600" aria-hidden="true" />;
+        return <CreditCard className="w-4 h-4 md:w-5 md:h-5 text-blue-600" aria-hidden="true" />
       case 'paypal':
-        return <Banknote className="w-4 h-4 md:w-5 md:h-5 text-blue-600" aria-hidden="true" />;
+        return <Banknote className="w-4 h-4 md:w-5 md:h-5 text-blue-600" aria-hidden="true" />
       default:
-        return <User className="w-4 h-4 md:w-5 md:h-5 text-blue-600" aria-hidden="true" />;
+        return <User className="w-4 h-4 md:w-5 md:h-5 text-blue-600" aria-hidden="true" />
     }
-  };
+  }
 
   return (
     <div className="space-y-3 md:space-y-4" role="feed" aria-label="Recent transactions">
-      {transactions.map((transaction) => (
+      {transactions.map(transaction => (
         <div
           key={transaction.id}
           className="flex items-center justify-between bg-white p-3 md:p-4 rounded-lg shadow-sm"
@@ -54,10 +54,11 @@ export function TransactionList({ transactions }: TransactionListProps) {
             )}
             aria-label={`${transaction.type === 'credit' ? 'Received' : 'Sent'} ${formatCurrency(transaction.amount)}`}
           >
-            {transaction.type === 'credit' ? '+' : '-'}{formatCurrency(transaction.amount)}
+            {transaction.type === 'credit' ? '+' : '-'}
+            {formatCurrency(transaction.amount)}
           </span>
         </div>
       ))}
     </div>
-  );
+  )
 }

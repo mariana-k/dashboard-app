@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { settingsSchema, SettingsFormData } from '../lib/helpers/settings-schema';
-import { ProfileImageUploader } from '../components/settings/ProfileImageUploader';
-import { FormInput } from '../components/settings/FormInput';
-import { FormButton } from '../components/settings/FormButton';
-import { SettingsTabs } from '../components/settings/SettingsTabs';
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { settingsSchema, SettingsFormData } from '../lib/helpers/settings-schema'
+import { ProfileImageUploader } from '../components/settings/ProfileImageUploader'
+import { FormInput } from '../components/settings/FormInput'
+import { FormButton } from '../components/settings/FormButton'
+import { SettingsTabs } from '../components/settings/SettingsTabs'
 
 const Settings = () => {
-  const [activeTab, setActiveTab] = useState('edit-profile');
+  const [activeTab, setActiveTab] = useState('edit-profile')
 
   const {
     register,
@@ -28,16 +28,16 @@ const Settings = () => {
       postalCode: '45962',
       country: 'USA',
     },
-  });
+  })
 
   const onSubmit = async (data: SettingsFormData) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log('Form submitted:', data);
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      console.log('Form submitted:', data)
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error submitting form:', error)
     }
-  };
+  }
 
   return (
     <div className="bg-white rounded-[20px] min-h-[calc(100vh-6rem)]">
@@ -124,23 +124,19 @@ const Settings = () => {
         {activeTab === 'preferences' && (
           <div className="space-y-6">
             <h3 className="text-lg font-medium text-gray-900">Notification Preferences</h3>
-            <div className="space-y-4">
-              {/* Notification preferences content */}
-            </div>
+            <div className="space-y-4">{/* Notification preferences content */}</div>
           </div>
         )}
 
         {activeTab === 'security' && (
           <div className="space-y-6">
             <h3 className="text-lg font-medium text-gray-900">Security Settings</h3>
-            <div className="space-y-4">
-              {/* Security settings content */}
-            </div>
+            <div className="space-y-4">{/* Security settings content */}</div>
           </div>
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Settings;
+export default Settings
