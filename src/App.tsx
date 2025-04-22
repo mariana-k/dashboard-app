@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
-import { Layout } from './components/Layout';
+import { Layout } from './components/AppLayout';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 // Lazy load pages
