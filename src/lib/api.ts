@@ -1,5 +1,26 @@
-import { Card, Transaction } from '../store/atoms';
+import { Card, Transaction, User } from '../store/atoms';
 
+export async function fetchUser(): Promise<User> {
+  const response = await fetch('https://dummyjson.com/users/1');
+  const data = await response.json();
+  return {
+    id: data.id.toString(),
+    name: `${data.firstName} ${data.lastName}`,
+    email: data.email,
+    avatar: data.image,
+  };
+}
+
+export async function fetchUsers(): Promise<User[]> {
+  const response = await fetch('https://dummyjson.com/users?limit=5');
+  const data = await response.json();
+  return data.users.map((user: any) => ({
+    id: user.id.toString(),
+    name: `${user.firstName} ${user.lastName}`,
+    email: user.email,
+    avatar: user.image,
+  }));
+}
 
 export async function fetchCards(): Promise<Card[]> {
   // Simulated API call
