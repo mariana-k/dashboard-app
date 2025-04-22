@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import QuickTransfer from '../QuickTransfer';
+import React from 'react';
 
 describe('QuickTransfer', () => {
     const mockContacts = [
