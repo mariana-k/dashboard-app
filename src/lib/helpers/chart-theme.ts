@@ -1,4 +1,4 @@
-import { ChartOptions } from 'chart.js';
+import { ChartOptions } from 'chart.js'
 
 export const chartColors = {
   primary: '#4F46E5',
@@ -16,7 +16,7 @@ export const chartColors = {
     investment: '#4F46E5',
     others: '#1F2937',
   },
-};
+}
 
 const commonOptions: ChartOptions<'bar' | 'line'> = {
   responsive: true,
@@ -85,7 +85,7 @@ const commonOptions: ChartOptions<'bar' | 'line'> = {
       beginAtZero: true,
     },
   },
-};
+}
 
 export const barChartOptions: ChartOptions<'bar'> = {
   ...commonOptions,
@@ -95,7 +95,7 @@ export const barChartOptions: ChartOptions<'bar'> = {
       barPercentage: 0.5,
     },
   },
-};
+}
 
 export const lineChartOptions: ChartOptions<'line'> = {
   ...commonOptions,
@@ -104,7 +104,7 @@ export const lineChartOptions: ChartOptions<'line'> = {
       tension: 0.4,
     },
   },
-};
+}
 
 export const pieChartOptions: ChartOptions<'pie'> = {
   responsive: true,
@@ -117,4 +117,4 @@ export const pieChartOptions: ChartOptions<'pie'> = {
       enabled: false,
     },
   },
-};
+}

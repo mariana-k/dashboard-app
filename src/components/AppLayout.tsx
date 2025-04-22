@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { cn } from '../lib/helpers/utils';
+import { ReactNode } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
+import { cn } from '../lib/helpers/utils'
 import {
   LayoutDashboard,
   Settings as SettingsIcon,
@@ -13,20 +13,20 @@ import {
   Wrench,
   Menu,
   X,
-} from 'lucide-react';
-import { AppHeader } from './AppHeader';
-import { profileImageState } from '../store/atoms';
-import { useState } from 'react';
+} from 'lucide-react'
+import { AppHeader } from './AppHeader'
+import { profileImageState } from '../store/atoms'
+import { useState } from 'react'
 
 interface LayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export function AppLayout({ children }: LayoutProps) {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const profileImage = useRecoilValue(profileImageState);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation()
+  const navigate = useNavigate()
+  const profileImage = useRecoilValue(profileImageState)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const navigation = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -38,20 +38,20 @@ export function AppLayout({ children }: LayoutProps) {
     { name: 'Services', href: '/services', icon: Wrench },
     { name: 'My Privileges', href: '/privileges', icon: Users },
     { name: 'Settings', href: '/settings', icon: SettingsIcon },
-  ];
+  ]
 
   const getPageTitle = () => {
-    const route = navigation.find(item => item.href === location.pathname);
-    return route ? route.name : 'Dashboard';
-  };
+    const route = navigation.find(item => item.href === location.pathname)
+    return route ? route.name : 'Dashboard'
+  }
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
 
   const handleProfileClick = () => {
-    navigate('/settings');
-  };
+    navigate('/settings')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -87,8 +87,8 @@ export function AppLayout({ children }: LayoutProps) {
           </div>
           <div className="flex-1 px-6 py-4 overflow-y-auto">
             <nav className="space-y-2">
-              {navigation.map((item) => {
-                const isActive = location.pathname === item.href;
+              {navigation.map(item => {
+                const isActive = location.pathname === item.href
                 return (
                   <Link
                     key={item.name}
@@ -110,7 +110,7 @@ export function AppLayout({ children }: LayoutProps) {
                     />
                     {item.name}
                   </Link>
-                );
+                )
               })}
             </nav>
           </div>
@@ -127,8 +127,8 @@ export function AppLayout({ children }: LayoutProps) {
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
-                  {navigation.map((item) => {
-                    const isActive = location.pathname === item.href;
+                  {navigation.map(item => {
+                    const isActive = location.pathname === item.href
                     return (
                       <li key={item.name}>
                         <Link
@@ -150,7 +150,7 @@ export function AppLayout({ children }: LayoutProps) {
                           {item.name}
                         </Link>
                       </li>
-                    );
+                    )
                   })}
                 </ul>
               </li>
@@ -196,12 +196,10 @@ export function AppLayout({ children }: LayoutProps) {
         {/* Page content */}
         <main className="flex-1">
           <div className="py-6">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              {children}
-            </div>
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
           </div>
         </main>
       </div>
     </div>
-  );
+  )
 }
