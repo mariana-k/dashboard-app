@@ -246,6 +246,8 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      Value: Your AWS Access Key ID
    - Name: `AWS_SECRET_ACCESS_KEY`
      Value: Your AWS Secret Access Key
+   - Name: `AWS_ACCOUNT_ID`
+     Value: Your AWS Account ID (get it with: `aws sts get-caller-identity --query Account --output text`)
 
 #### Deploy
 
