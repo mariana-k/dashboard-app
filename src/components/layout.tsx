@@ -1,5 +1,6 @@
-import { ReactNode, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { ReactNode } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { cn } from '../lib/utils';
 import {
   LayoutDashboard,
@@ -13,6 +14,9 @@ import {
   Menu,
   X,
 } from 'lucide-react';
+import { Header } from './header';
+import { profileImageState } from '../store/atoms';
+import { useState } from 'react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -20,6 +24,8 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const profileImage = useRecoilValue(profileImageState);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigation = [
@@ -34,10 +40,18 @@ export function Layout({ children }: LayoutProps) {
     { name: 'Settings', href: '/settings', icon: SettingsIcon },
   ];
 
+  const getPageTitle = () => {
+    const route = navigation.find(item => item.href === location.pathname);
+    return route ? route.name : 'Dashboard';
+  };
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const handleProfileClick = () => {
+    navigate('/settings');
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -147,8 +161,8 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Main content */}
       <div className="flex flex-1 flex-col md:pl-64">
-
-        <div className="sticky top-0 z-40 bg-white border-b border-gray-200 md:hidden">
+        {/* Mobile header */}
+        <header className="sticky top-0 z-40 bg-white border-b border-gray-200 md:hidden">
           <div className="flex h-16 items-center gap-x-4 px-4 shadow-sm">
             <button
               type="button"
@@ -158,7 +172,25 @@ export function Layout({ children }: LayoutProps) {
               <span className="sr-only">Open sidebar</span>
               <Menu className="h-6 w-6" aria-hidden="true" />
             </button>
+            <div className="flex flex-1 items-center justify-between">
+              <h1 className="text-lg font-semibold text-gray-900">{getPageTitle()}</h1>
+              <button
+                onClick={handleProfileClick}
+                className="rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                <img
+                  src={profileImage}
+                  alt="Profile"
+                  className="h-8 w-8 rounded-full object-cover"
+                />
+              </button>
+            </div>
           </div>
+        </header>
+
+        {/* Desktop header */}
+        <div className="hidden md:block sticky top-0 z-40">
+          <Header title={getPageTitle()} onProfileClick={handleProfileClick} />
         </div>
 
         {/* Page content */}
