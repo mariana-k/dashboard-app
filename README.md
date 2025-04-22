@@ -114,7 +114,14 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
    ```
 
-3. Create a key pair:
+3. Create ECS cluster manually:
+   ```bash
+   aws ecs create-cluster \
+     --cluster-name financial-dashboard-cluster \
+     --region us-east-1
+   ```
+
+4. Create a key pair:
    ```bash
    aws ec2 create-key-pair \
      --key-name financial-dashboard-key \
@@ -123,7 +130,7 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
    chmod 400 financial-dashboard-key.pem
    ```
 
-4. Create security group:
+5. Create security group:
    ```bash
    # Create security group
    aws ec2 create-security-group \
@@ -152,7 +159,7 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --cidr 0.0.0.0/0
    ```
 
-5. Get latest Amazon Linux 2 AMI ID:
+6. Get latest Amazon Linux 2 AMI ID:
    ```bash
    aws ec2 describe-images \
      --owners amazon \
@@ -161,7 +168,7 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --output text
    ```
 
-6. Launch EC2 instance:
+7. Launch EC2 instance:
    ```bash
    aws ec2 run-instances \
      --image-id <AMI_ID_FROM_PREVIOUS_COMMAND> \
@@ -171,17 +178,10 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --security-groups financial-dashboard-sg
    ```
 
-7. Create ECR repository:
+8. Create ECR repository:
    ```bash
    aws ecr create-repository \
      --repository-name financial-dashboard \
-     --region us-east-1
-   ```
-
-8. Create ECS cluster:
-   ```bash
-   aws ecs create-cluster \
-     --cluster-name financial-dashboard-cluster \
      --region us-east-1
    ```
 
