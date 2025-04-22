@@ -39,7 +39,7 @@ const tabs: Tab[] = [
   { id: 'security', label: 'Security', icon: Lock },
 ];
 
-export function Settings() {
+const Settings = () => {
   const [activeTab, setActiveTab] = useState('edit-profile');
   const [profileImage, setProfileImage] = useRecoilState(profileImageState);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -273,4 +273,6 @@ export function Settings() {
       </div>
     </div>
   );
-}
+};
+
+export default Settings;
