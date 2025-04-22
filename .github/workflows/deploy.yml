@@ -43,13 +43,28 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-    - name: Create ECS cluster if not exists
+    - name: Create ECS cluster
       run: |
-        if ! aws ecs describe-clusters --clusters ${{ env.ECS_CLUSTER }} --query 'clusters[0].status' --output text &>/dev/null; then
+        # Check if cluster exists
+        CLUSTER_STATUS=$(aws ecs describe-clusters --clusters ${{ env.ECS_CLUSTER }} --query 'clusters[0].status' --output text 2>/dev/null || echo "NOT_FOUND")
+        
+        if [ "$CLUSTER_STATUS" = "NOT_FOUND" ]; then
           echo "Creating ECS cluster..."
           aws ecs create-cluster --cluster-name ${{ env.ECS_CLUSTER }}
+          
+          # Wait for cluster to be active
+          echo "Waiting for cluster to be active..."
+          while true; do
+            STATUS=$(aws ecs describe-clusters --clusters ${{ env.ECS_CLUSTER }} --query 'clusters[0].status' --output text)
+            if [ "$STATUS" = "ACTIVE" ]; then
+              echo "Cluster is active"
+              break
+            fi
+            echo "Cluster status: $STATUS, waiting..."
+            sleep 5
+          done
         else
-          echo "ECS cluster already exists"
+          echo "ECS cluster already exists with status: $CLUSTER_STATUS"
         fi
 
     - name: Create or update task definition
@@ -98,7 +113,10 @@ jobs:
 
     - name: Create or update ECS service
       run: |
-        if ! aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }} --query 'services[0].status' --output text &>/dev/null; then
+        # Check if service exists
+        SERVICE_STATUS=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }} --query 'services[0].status' --output text 2>/dev/null || echo "NOT_FOUND")
+        
+        if [ "$SERVICE_STATUS" = "NOT_FOUND" ]; then
           echo "Creating ECS service..."
           aws ecs create-service \
             --cluster ${{ env.ECS_CLUSTER }} \
@@ -108,7 +126,7 @@ jobs:
             --launch-type FARGATE \
             --network-configuration "awsvpcConfiguration={subnets=[${{ secrets.SUBNET_ID }}],securityGroups=[${{ secrets.SECURITY_GROUP_ID }}],assignPublicIp=ENABLED}"
         else
-          echo "ECS service exists, proceeding with update..."
+          echo "ECS service exists with status: $SERVICE_STATUS"
         fi
 
     - name: Deploy Amazon ECS task definition
