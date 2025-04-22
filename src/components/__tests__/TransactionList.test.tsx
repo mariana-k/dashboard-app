@@ -1,46 +1,51 @@
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { TransactionList } from '../transaction-list';
+import { TransactionList } from '../TransactionList';
+
+const mockTransactions = [
+  {
+    id: '1',
+    type: 'credit' as const,
+    amount: 1000,
+    description: 'Salary',
+    date: '2024-03-20',
+    category: 'income',
+  },
+  {
+    id: '2',
+    type: 'debit' as const,
+    amount: 500,
+    description: 'Groceries',
+    date: '2024-03-19',
+    category: 'food',
+  },
+];
 
 describe('TransactionList Component', () => {
-  const mockTransactions = [
-    {
-      id: '1',
-      description: 'Payment received',
-      amount: 500,
-      date: '2024-02-28',
-      type: 'credit' as const,
-      category: 'Income',
-    },
-    {
-      id: '2',
-      description: 'Card payment',
-      amount: -100,
-      date: '2024-02-27',
-      type: 'debit' as const,
-      category: 'Shopping',
-    },
-  ];
-
-  it('renders all transactions', () => {
+  it('renders transactions correctly', () => {
     render(<TransactionList transactions={mockTransactions} />);
-    
-    expect(screen.getByText('Payment received')).toBeInTheDocument();
-    expect(screen.getByText('Card payment')).toBeInTheDocument();
+
+    expect(screen.getByText('Salary')).toBeInTheDocument();
+    expect(screen.getByText('Groceries')).toBeInTheDocument();
+    expect(screen.getByText('+$1,000')).toBeInTheDocument();
+    expect(screen.getByText('-$500')).toBeInTheDocument();
   });
 
-  it('displays correct amount formatting for credit transactions', () => {
+  it('applies correct styling for credit transactions', () => {
     render(<TransactionList transactions={mockTransactions} />);
-    expect(screen.getByText('+$500')).toBeInTheDocument();
+    const creditAmount = screen.getByText('+$1,000');
+    expect(creditAmount).toHaveClass('text-green-600');
   });
 
-  it('displays correct amount formatting for debit transactions', () => {
+  it('applies correct styling for debit transactions', () => {
     render(<TransactionList transactions={mockTransactions} />);
-    expect(screen.getByText('-$100')).toBeInTheDocument();
+    const debitAmount = screen.getByText('-$500');
+    expect(debitAmount).toHaveClass('text-red-600');
   });
 
-  it('uses correct icon based on transaction description', () => {
+  it('formats dates correctly', () => {
     render(<TransactionList transactions={mockTransactions} />);
-    const cardIcon = document.querySelector('[aria-hidden="true"]');
-    expect(cardIcon).toBeInTheDocument();
+    expect(screen.getByText('Mar 20, 2024')).toBeInTheDocument();
+    expect(screen.getByText('Mar 19, 2024')).toBeInTheDocument();
   });
 });
