@@ -1,6 +1,6 @@
 import { Pie } from 'react-chartjs-2';
-import { pieChartOptions } from '../../helpers/chart-theme';
-import { calculatePieChartLabelPosition } from '../../helpers/utils';
+import { pieChartOptions } from '../../lib/helpers/chart-theme';
+import { calculatePieChartLabelPosition } from '../../lib/helpers/utils';
 
 interface ExpenseStatisticsChartProps {
     data: {

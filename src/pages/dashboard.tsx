@@ -17,10 +17,11 @@ import {
 } from 'chart.js';
 import { Bar, Pie, Line } from 'react-chartjs-2';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
-import { Card } from '../components/PaymentCard';
+import { PaymentCard } from '../components/PaymentCard';
 import { TransactionList } from '../components/TransactionList';
-import { fetchCards, fetchTransactions, fetchUsers } from '../helpers/api';
-import { chartColors, barChartOptions, lineChartOptions, pieChartOptions } from '../helpers/chart-theme';
+
+import { chartColors, barChartOptions, lineChartOptions, pieChartOptions } from '../lib/helpers/chart-theme';
+import { fetchCards, fetchTransactions, fetchUsers } from '@/lib/helpers/api';
 
 ChartJS.register(
   CategoryScale,
@@ -169,7 +170,7 @@ const Dashboard = () => {
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {cards?.map((card) => (
-              <Card
+              <PaymentCard
                 key={card.id}
                 balance={card.balance}
                 cardHolder={card.cardHolder}

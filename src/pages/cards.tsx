@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { Card } from '../components/PaymentCard';
-import { fetchCards } from '../helpers/api';
+import { PaymentCard } from '../components/PaymentCard';
+import { fetchCards } from '../lib/helpers/api';
+
 
 const Cards = () => {
   const { data: cards } = useQuery({
@@ -16,7 +17,7 @@ const Cards = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {cards?.map((card) => (
-          <Card
+          <PaymentCard
             key={card.id}
             balance={card.balance}
             cardHolder={card.cardHolder}
