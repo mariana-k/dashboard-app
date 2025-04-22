@@ -14,7 +14,7 @@ import {
   Menu,
   X,
 } from 'lucide-react';
-import { Header } from './Header';
+import { Header } from './AppHeader';
 import { profileImageState } from '../store/atoms';
 import { useState } from 'react';
 
