@@ -1,13 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
-import { PaymentCard } from '../components/PaymentCard';
-import { fetchCards } from '../lib/helpers/api';
-
+import { useQuery } from '@tanstack/react-query'
+import { PaymentCard } from '../components/PaymentCard'
+import { fetchCards } from '../lib/helpers/api'
 
 const Cards = () => {
   const { data: cards } = useQuery({
     queryKey: ['cards'],
     queryFn: fetchCards,
-  });
+  })
 
   return (
     <div>
@@ -16,7 +15,7 @@ const Cards = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {cards?.map((card) => (
+        {cards?.map(card => (
           <PaymentCard
             key={card.id}
             balance={card.balance}
@@ -28,7 +27,7 @@ const Cards = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Cards;
+export default Cards

@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { useState, useRef } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { Link } from 'react-router-dom'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,14 +14,19 @@ import {
   Tooltip,
   Legend,
   Filler,
-} from 'chart.js';
-import { Bar, Pie, Line } from 'react-chartjs-2';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
-import { PaymentCard } from '../components/PaymentCard';
-import { TransactionList } from '../components/TransactionList';
+} from 'chart.js'
+import { Bar, Pie, Line } from 'react-chartjs-2'
+import { ChevronRight, ChevronLeft } from 'lucide-react'
+import { PaymentCard } from '../components/PaymentCard'
+import { TransactionList } from '../components/TransactionList'
 
-import { chartColors, barChartOptions, lineChartOptions, pieChartOptions } from '../lib/helpers/chart-theme';
-import { fetchCards, fetchTransactions, fetchUsers } from '@/lib/helpers/api';
+import {
+  chartColors,
+  barChartOptions,
+  lineChartOptions,
+  pieChartOptions,
+} from '../lib/helpers/chart-theme'
+import { fetchCards, fetchTransactions, fetchUsers } from '../lib/helpers/api'
 
 ChartJS.register(
   CategoryScale,
@@ -35,63 +40,64 @@ ChartJS.register(
   Tooltip,
   Legend,
   Filler
-);
+)
 
 const Dashboard = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const cardsContainerRef = useRef<HTMLDivElement>(null);
-  const pieChartRef = useRef<ChartJS<'pie'> | null>(null);
+  const [currentPage, setCurrentPage] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
+  const cardsContainerRef = useRef<HTMLDivElement>(null)
+  const pieChartRef = useRef<ChartJS<'pie'> | null>(null)
 
   const { data: cards } = useQuery({
     queryKey: ['cards'],
     queryFn: fetchCards,
-  });
+  })
 
   const { data: transactions } = useQuery({
     queryKey: ['transactions'],
     queryFn: fetchTransactions,
-  });
+  })
 
   const { data: quickTransferContacts } = useQuery({
     queryKey: ['users'],
     queryFn: fetchUsers,
-    select: (users) => users.map(user => ({
-      id: user.id,
-      name: user.name,
-      role: 'User',
-      avatar: user.avatar,
-    })),
-  });
+    select: users =>
+      users.map(user => ({
+        id: user.id,
+        name: user.name,
+        role: 'User',
+        avatar: user.avatar,
+      })),
+  })
 
   const displayedContacts = quickTransferContacts
-    ? quickTransferContacts.slice(currentPage * 3, (currentPage * 3) + 3)
-    : [];
+    ? quickTransferContacts.slice(currentPage * 3, currentPage * 3 + 3)
+    : []
 
-  const hasNextPage = quickTransferContacts && currentPage * 3 + 3 < quickTransferContacts.length;
-  const hasPrevPage = currentPage > 0;
+  const hasNextPage = quickTransferContacts && currentPage * 3 + 3 < quickTransferContacts.length
+  const hasPrevPage = currentPage > 0
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setStartX(e.pageX - (cardsContainerRef.current?.offsetLeft || 0));
-    setScrollLeft(cardsContainerRef.current?.scrollLeft || 0);
-  };
+    setIsDragging(true)
+    setStartX(e.pageX - (cardsContainerRef.current?.offsetLeft || 0))
+    setScrollLeft(cardsContainerRef.current?.scrollLeft || 0)
+  }
 
   const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+    setIsDragging(false)
+  }
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - (cardsContainerRef.current?.offsetLeft || 0);
-    const walk = (x - startX) * 2;
+    if (!isDragging) return
+    e.preventDefault()
+    const x = e.pageX - (cardsContainerRef.current?.offsetLeft || 0)
+    const walk = (x - startX) * 2
     if (cardsContainerRef.current) {
-      cardsContainerRef.current.scrollLeft = scrollLeft - walk;
+      cardsContainerRef.current.scrollLeft = scrollLeft - walk
     }
-  };
+  }
 
   const weeklyActivityData = {
     labels: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
@@ -109,13 +115,13 @@ const Dashboard = () => {
         borderRadius: 8,
       },
     ],
-  };
+  }
 
   const customBarChartOptions = {
     ...barChartOptions,
     categoryPercentage: 0.8,
     barPercentage: 0.5,
-  };
+  }
 
   const expenseData = {
     labels: ['Entertainment', 'Bill Expense', 'Investment', 'Others'],
@@ -133,7 +139,7 @@ const Dashboard = () => {
         offset: [20, 35, 25, 30],
       },
     ],
-  };
+  }
 
   const balanceHistoryData = {
     labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
@@ -147,7 +153,7 @@ const Dashboard = () => {
         tension: 0.4,
       },
     ],
-  };
+  }
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -169,7 +175,7 @@ const Dashboard = () => {
             onMouseMove={handleMouseMove}
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
-            {cards?.map((card) => (
+            {cards?.map(card => (
               <PaymentCard
                 key={card.id}
                 balance={card.balance}
@@ -186,7 +192,10 @@ const Dashboard = () => {
         <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg md:text-xl font-semibold">Recent Transactions</h2>
-            <Link to="/transactions" className="text-sm md:text-base text-blue-600 hover:text-blue-700">
+            <Link
+              to="/transactions"
+              className="text-sm md:text-base text-blue-600 hover:text-blue-700"
+            >
               See All
             </Link>
           </div>
@@ -216,34 +225,40 @@ const Dashboard = () => {
                 ref={pieChartRef}
                 data={expenseData}
                 options={pieChartOptions}
-                plugins={[{
-                  id: 'customLabels',
-                  afterDraw: (chart) => {
-                    const { ctx, data } = chart;
-                    ctx.save();
-                    const total = data.datasets[0].data.reduce((sum: number, value: number) => sum + value, 0);
-                    let currentAngle = -0.5 * Math.PI;
+                plugins={[
+                  {
+                    id: 'customLabels',
+                    afterDraw: chart => {
+                      const { ctx, data } = chart
+                      ctx.save()
+                      const total = data.datasets[0].data.reduce(
+                        (sum: number, value: number) => sum + value,
+                        0
+                      )
+                      let currentAngle = -0.5 * Math.PI
 
-                    data.datasets[0].data.forEach((value: number, index: number) => {
-                      const sliceAngle = (value / total) * 2 * Math.PI;
-                      const middleAngle = currentAngle + sliceAngle / 2;
-                      const radius = (chart.getDatasetMeta(0).data[0] as any).outerRadius * 0.65;
+                      data.datasets[0].data.forEach((value: number, index: number) => {
+                        const sliceAngle = (value / total) * 2 * Math.PI
+                        const middleAngle = currentAngle + sliceAngle / 2
+                        const radius =
+                          (chart.getDatasetMeta(0).data[0] as unknown as { outerRadius: number })
+                            .outerRadius * 0.65
+                        const x = chart.getDatasetMeta(0).data[0].x + Math.cos(middleAngle) * radius
+                        const y = chart.getDatasetMeta(0).data[0].y + Math.sin(middleAngle) * radius
 
-                      const x = chart.getDatasetMeta(0).data[0].x + Math.cos(middleAngle) * radius;
-                      const y = chart.getDatasetMeta(0).data[0].y + Math.sin(middleAngle) * radius;
+                        ctx.font = '600 12px system-ui'
+                        ctx.fillStyle = '#fff'
+                        ctx.textAlign = 'center'
+                        ctx.textBaseline = 'middle'
+                        const label = `${value}% ${data?.labels?.[index]}`
+                        ctx.fillText(label, x, y)
 
-                      ctx.font = '600 12px system-ui';
-                      ctx.fillStyle = '#fff';
-                      ctx.textAlign = 'center';
-                      ctx.textBaseline = 'middle';
-                      const label = `${value}% ${data?.labels?.[index]}`;
-                      ctx.fillText(label, x, y);
-
-                      currentAngle += sliceAngle;
-                    });
-                    ctx.restore();
-                  }
-                }]}
+                        currentAngle += sliceAngle
+                      })
+                      ctx.restore()
+                    },
+                  },
+                ]}
               />
             </div>
           </div>
@@ -254,7 +269,7 @@ const Dashboard = () => {
           <h2 className="text-lg md:text-xl font-semibold mb-4">Quick Transfer</h2>
           <div className="space-y-6">
             <div className="flex items-center gap-4">
-              {displayedContacts.map((contact) => (
+              {displayedContacts.map(contact => (
                 <button key={contact.id} className="flex flex-col items-center gap-1">
                   <img
                     src={contact.avatar}
@@ -313,7 +328,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

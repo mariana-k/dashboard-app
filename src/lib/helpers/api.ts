@@ -1,25 +1,27 @@
-import { Card, Transaction, User } from '../store/atoms';
+import { User, Card, Transaction } from '../../store/atoms'
 
 export async function fetchUser(): Promise<User> {
-  const response = await fetch('https://dummyjson.com/users/1');
-  const data = await response.json();
+  const response = await fetch('https://dummyjson.com/users/1')
+  const data = await response.json()
   return {
     id: data.id.toString(),
     name: `${data.firstName} ${data.lastName}`,
     email: data.email,
     avatar: data.image,
-  };
+  }
 }
 
 export async function fetchUsers(): Promise<User[]> {
-  const response = await fetch('https://dummyjson.com/users?limit=5');
-  const data = await response.json();
-  return data.users.map((user: any) => ({
-    id: user.id.toString(),
-    name: `${user.firstName} ${user.lastName}`,
-    email: user.email,
-    avatar: user.image,
-  }));
+  const response = await fetch('https://dummyjson.com/users?limit=5')
+  const data = await response.json()
+  return data.users.map(
+    (user: { id: number; firstName: string; lastName: string; email: string; image: string }) => ({
+      id: user.id.toString(),
+      name: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+      avatar: user.image,
+    })
+  )
 }
 
 export async function fetchCards(): Promise<Card[]> {
@@ -28,7 +30,7 @@ export async function fetchCards(): Promise<Card[]> {
     {
       id: '1',
       number: '3778 **** **** 1234',
-      balance: 5756.00,
+      balance: 5756.0,
       cardHolder: 'Eddy Cusuma',
       expiryDate: '12/22',
       type: 'visa',
@@ -36,12 +38,12 @@ export async function fetchCards(): Promise<Card[]> {
     {
       id: '2',
       number: '3778 **** **** 1234',
-      balance: 5756.00,
+      balance: 5756.0,
       cardHolder: 'Eddy Cusuma',
       expiryDate: '12/22',
       type: 'mastercard',
     },
-  ];
+  ]
 }
 
 export async function fetchTransactions(): Promise<Transaction[]> {
@@ -71,5 +73,5 @@ export async function fetchTransactions(): Promise<Transaction[]> {
       type: 'credit',
       category: 'Transfer',
     },
-  ];
+  ]
 }
