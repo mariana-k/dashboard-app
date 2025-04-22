@@ -1,5 +1,3 @@
-
-
 import { useState, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
@@ -17,9 +15,11 @@ import {
   Legend,
   Filler,
 } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 import { Card } from '../components/card';
 import { TransactionList } from '../components/transaction-list';
 import { fetchCards, fetchTransactions } from '../lib/api';
+import { chartColors, barChartOptions } from '../lib/chart-theme';
 
 ChartJS.register(
   CategoryScale,
@@ -36,6 +36,7 @@ ChartJS.register(
 );
 
 export function Dashboard() {
+  const [currentPage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -50,8 +51,6 @@ export function Dashboard() {
     queryKey: ['transactions'],
     queryFn: fetchTransactions,
   });
-
-
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -72,6 +71,32 @@ export function Dashboard() {
       cardsContainerRef.current.scrollLeft = scrollLeft - walk;
     }
   };
+
+  const weeklyActivityData = {
+    labels: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+    datasets: [
+      {
+        label: 'Deposit',
+        data: [200, 100, 150, 250, 200, 250, 300],
+        backgroundColor: chartColors.primary,
+        borderRadius: 8,
+      },
+      {
+        label: 'Withdraw',
+        data: [450, 300, 350, 300, 150, 400, 400],
+        backgroundColor: chartColors.gray,
+        borderRadius: 8,
+      },
+    ],
+  };
+
+  const customBarChartOptions = {
+    ...barChartOptions,
+    categoryPercentage: 0.8,
+    barPercentage: 0.5,
+  };
+
+
   return (
     <div className="space-y-6 md:space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -117,6 +142,15 @@ export function Dashboard() {
             <div className="max-h-[400px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
               {transactions && <TransactionList transactions={transactions} />}
             </div>
+          </div>
+        </div>
+      </div>
+      {/* Weekly Activity Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+        <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+          <h2 className="text-lg md:text-xl font-semibold mb-4">Weekly Activity</h2>
+          <div className="h-[300px] md:h-[400px]">
+            <Bar data={weeklyActivityData} options={customBarChartOptions} />
           </div>
         </div>
       </div>
