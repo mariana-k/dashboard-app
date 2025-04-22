@@ -48,6 +48,32 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
    ```
    The app will be available at http://localhost:80
 
+### AWS Deployment
+
+1. Create an EC2 instance:
+   ```bash
+   # Create security group
+   aws ec2 create-security-group --group-name financial-dashboard-sg --description "Security group for financial dashboard"
+   aws ec2 authorize-security-group-ingress --group-name financial-dashboard-sg --protocol tcp --port 80 --cidr 0.0.0.0/0
+
+   # Launch EC2 instance
+   aws ec2 run-instances \
+     --image-id ami-0c55b159cbfafe1f0 \
+     --count 1 \
+     --instance-type t2.micro \
+     --key-name your-key-pair \
+     --security-groups financial-dashboard-sg
+   ```
+
+2. Set up GitHub Secrets:
+   - `AWS_ACCESS_KEY_ID`: Your AWS access key
+   - `AWS_SECRET_ACCESS_KEY`: Your AWS secret key
+
+3. Push to main branch to trigger deployment:
+   ```bash
+   git push origin main
+   ```
+
 ## Project Structure
 
 ```
