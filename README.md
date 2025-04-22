@@ -121,7 +121,18 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --region us-east-1
    ```
 
-4. Create a key pair:
+4. Create ECS service manually:
+   ```bash
+   aws ecs create-service \
+     --cluster financial-dashboard-cluster \
+     --service-name financial-dashboard-service \
+     --task-definition financial-dashboard-task \
+     --desired-count 1 \
+     --launch-type FARGATE \
+     --network-configuration "awsvpcConfiguration={subnets=[YOUR_SUBNET_ID],securityGroups=[YOUR_SECURITY_GROUP_ID],assignPublicIp=ENABLED}"
+   ```
+
+5. Create a key pair:
    ```bash
    aws ec2 create-key-pair \
      --key-name financial-dashboard-key \
@@ -130,7 +141,7 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
    chmod 400 financial-dashboard-key.pem
    ```
 
-5. Create security group:
+6. Create security group:
    ```bash
    # Create security group
    aws ec2 create-security-group \
@@ -159,7 +170,7 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --cidr 0.0.0.0/0
    ```
 
-6. Get latest Amazon Linux 2 AMI ID:
+7. Get latest Amazon Linux 2 AMI ID:
    ```bash
    aws ec2 describe-images \
      --owners amazon \
@@ -168,7 +179,7 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --output text
    ```
 
-7. Launch EC2 instance:
+8. Launch EC2 instance:
    ```bash
    aws ec2 run-instances \
      --image-id <AMI_ID_FROM_PREVIOUS_COMMAND> \
@@ -178,47 +189,36 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --security-groups financial-dashboard-sg
    ```
 
-8. Create ECR repository:
+9. Create ECR repository:
    ```bash
    aws ecr create-repository \
      --repository-name financial-dashboard \
      --region us-east-1
    ```
 
-9. Create ECS task definition:
-   ```bash
-   aws ecs register-task-definition \
-     --family financial-dashboard-task \
-     --network-mode awsvpc \
-     --requires-compatibilities FARGATE \
-     --cpu 256 \
-     --memory 512 \
-     --execution-role-arn arn:aws:iam::<YOUR_ACCOUNT_ID>:role/ecsTaskExecutionRole \
-     --container-definitions '[
-       {
-         "name": "financial-dashboard",
-         "image": "<ECR_REPOSITORY_URI>",
-         "portMappings": [
-           {
-             "containerPort": 80,
-             "hostPort": 80,
-             "protocol": "tcp"
-           }
-         ],
-         "essential": true
-       }
-     ]'
-   ```
-
-10. Create ECS service:
+10. Create ECS task definition:
     ```bash
-    aws ecs create-service \
-      --cluster financial-dashboard-cluster \
-      --service-name financial-dashboard-service \
-      --task-definition financial-dashboard-task \
-      --desired-count 1 \
-      --launch-type FARGATE \
-      --network-configuration "awsvpcConfiguration={subnets=[<SUBNET_ID>],securityGroups=[<SECURITY_GROUP_ID>],assignPublicIp=ENABLED}"
+    aws ecs register-task-definition \
+      --family financial-dashboard-task \
+      --network-mode awsvpc \
+      --requires-compatibilities FARGATE \
+      --cpu 256 \
+      --memory 512 \
+      --execution-role-arn arn:aws:iam::<YOUR_ACCOUNT_ID>:role/ecsTaskExecutionRole \
+      --container-definitions '[
+        {
+          "name": "financial-dashboard",
+          "image": "<ECR_REPOSITORY_URI>",
+          "portMappings": [
+            {
+              "containerPort": 80,
+              "hostPort": 80,
+              "protocol": "tcp"
+            }
+          ],
+          "essential": true
+        }
+      ]'
     ```
 
 11. Get ECR repository URI:
