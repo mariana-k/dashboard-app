@@ -50,29 +50,137 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
 
 ### AWS Deployment
 
-1. Create an EC2 instance:
+#### Prerequisites
+
+1. Install AWS CLI:
+   ```bash
+   brew install awscli
+   ```
+
+2. Install Docker:
+   ```bash
+   brew install --cask docker
+   ```
+   Start Docker Desktop from Applications or:
+   ```bash
+   open -a Docker
+   ```
+
+3. Configure AWS credentials:
+   ```bash
+   aws configure
+   ```
+   Enter your:
+   - AWS Access Key ID
+   - AWS Secret Access Key
+   - Default region (e.g., us-east-1)
+   - Default output format (json)
+
+#### Setup AWS Resources
+
+1. Create a key pair:
+   ```bash
+   aws ec2 create-key-pair \
+     --key-name financial-dashboard-key \
+     --query 'KeyMaterial' \
+     --output text > financial-dashboard-key.pem
+   chmod 400 financial-dashboard-key.pem
+   ```
+
+2. Create security group:
    ```bash
    # Create security group
-   aws ec2 create-security-group --group-name financial-dashboard-sg --description "Security group for financial dashboard"
-   aws ec2 authorize-security-group-ingress --group-name financial-dashboard-sg --protocol tcp --port 80 --cidr 0.0.0.0/0
+   aws ec2 create-security-group \
+     --group-name financial-dashboard-sg \
+     --description "Security group for financial dashboard"
 
-   # Launch EC2 instance
+   # Allow HTTP traffic
+   aws ec2 authorize-security-group-ingress \
+     --group-name financial-dashboard-sg \
+     --protocol tcp \
+     --port 80 \
+     --cidr 0.0.0.0/0
+
+   # Allow HTTPS traffic
+   aws ec2 authorize-security-group-ingress \
+     --group-name financial-dashboard-sg \
+     --protocol tcp \
+     --port 443 \
+     --cidr 0.0.0.0/0
+
+   # Allow SSH access (optional)
+   aws ec2 authorize-security-group-ingress \
+     --group-name financial-dashboard-sg \
+     --protocol tcp \
+     --port 22 \
+     --cidr 0.0.0.0/0
+   ```
+
+3. Get latest Amazon Linux 2 AMI ID:
+   ```bash
+   aws ec2 describe-images \
+     --owners amazon \
+     --filters "Name=name,Values=amzn2-ami-hvm-*-x86_64-gp2" \
+     --query 'sort_by(Images, &CreationDate)[-1].[ImageId]' \
+     --output text
+   ```
+
+4. Launch EC2 instance:
+   ```bash
    aws ec2 run-instances \
-     --image-id ami-0c55b159cbfafe1f0 \
+     --image-id <AMI_ID_FROM_PREVIOUS_COMMAND> \
      --count 1 \
      --instance-type t2.micro \
-     --key-name your-key-pair \
+     --key-name financial-dashboard-key \
      --security-groups financial-dashboard-sg
    ```
 
-2. Set up GitHub Secrets:
-   - `AWS_ACCESS_KEY_ID`: Your AWS access key
-   - `AWS_SECRET_ACCESS_KEY`: Your AWS secret key
+5. Create ECR repository:
+   ```bash
+   aws ecr create-repository \
+     --repository-name financial-dashboard \
+     --region us-east-1
+   ```
 
-3. Push to main branch to trigger deployment:
+6. Get ECR repository URI:
+   ```bash
+   aws ecr describe-repositories \
+     --repository-names financial-dashboard \
+     --region us-east-1 \
+     --query 'repositories[0].repositoryUri' \
+     --output text
+   ```
+
+7. Login to ECR:
+   ```bash
+   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <REPOSITORY_URI>
+   ```
+
+#### Setup GitHub Secrets
+
+1. Go to your GitHub repository
+2. Click "Settings" tab
+3. In the left sidebar, click "Secrets and variables" → "Actions"
+4. Click "New repository secret"
+5. Add these secrets:
+   - Name: `AWS_ACCESS_KEY_ID`
+     Value: Your AWS Access Key ID
+   - Name: `AWS_SECRET_ACCESS_KEY`
+     Value: Your AWS Secret Access Key
+
+#### Deploy
+
+1. Push to main branch:
    ```bash
    git push origin main
    ```
+
+The GitHub Actions workflow will:
+1. Build the Docker image
+2. Push it to ECR
+3. Deploy to ECS
+
+Your app will be available at your EC2 instance's public IP.
 
 ## Project Structure
 
