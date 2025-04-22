@@ -17,7 +17,7 @@ import {
 } from 'chart.js';
 import { Bar, Pie, Line } from 'react-chartjs-2';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
-import { Card } from '../components/Card';
+import { Card } from '../components/PaymentCard';
 import { TransactionList } from '../components/TransactionList';
 import { fetchCards, fetchTransactions, fetchUsers } from '../helpers/api';
 import { chartColors, barChartOptions, lineChartOptions, pieChartOptions } from '../helpers/chart-theme';
