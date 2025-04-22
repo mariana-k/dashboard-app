@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { Card } from '../Card';
+import { Card } from '../PaymentCard';
 import React from 'react';
 
 describe('Card Component', () => {
