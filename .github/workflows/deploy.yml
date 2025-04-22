@@ -43,6 +43,15 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
+    - name: Create ECS cluster if not exists
+      run: |
+        if ! aws ecs describe-clusters --clusters ${{ env.ECS_CLUSTER }} --query 'clusters[0].status' --output text &>/dev/null; then
+          echo "Creating ECS cluster..."
+          aws ecs create-cluster --cluster-name ${{ env.ECS_CLUSTER }}
+        else
+          echo "ECS cluster already exists"
+        fi
+
     - name: Create or update task definition
       run: |
         # Check if task definition exists
@@ -86,6 +95,21 @@ jobs:
         task-definition: task-definition.json
         container-name: financial-dashboard
         image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+
+    - name: Create or update ECS service
+      run: |
+        if ! aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --services ${{ env.ECS_SERVICE }} --query 'services[0].status' --output text &>/dev/null; then
+          echo "Creating ECS service..."
+          aws ecs create-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service-name ${{ env.ECS_SERVICE }} \
+            --task-definition ${{ env.ECS_TASK_DEFINITION }} \
+            --desired-count 1 \
+            --launch-type FARGATE \
+            --network-configuration "awsvpcConfiguration={subnets=[${{ secrets.SUBNET_ID }}],securityGroups=[${{ secrets.SECURITY_GROUP_ID }}],assignPublicIp=ENABLED}"
+        else
+          echo "ECS service exists, proceeding with update..."
+        fi
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1

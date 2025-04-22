@@ -248,6 +248,10 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      Value: Your AWS Secret Access Key
    - Name: `AWS_ACCOUNT_ID`
      Value: Your AWS Account ID (get it with: `aws sts get-caller-identity --query Account --output text`)
+   - Name: `SUBNET_ID`
+     Value: Your VPC subnet ID (get it with: `aws ec2 describe-subnets --query 'Subnets[0].SubnetId' --output text`)
+   - Name: `SECURITY_GROUP_ID`
+     Value: Your security group ID (get it with: `aws ec2 describe-security-groups --group-names financial-dashboard-sg --query 'SecurityGroups[0].GroupId' --output text`)
 
 #### Deploy
 
@@ -264,9 +268,11 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
 2. Review and merge the PR:
    - The deployment will automatically start when the PR is merged to main
    - The GitHub Actions workflow will:
-     1. Build the Docker image
-     2. Push it to ECR
-     3. Deploy to ECS
+     1. Create ECS cluster (if not exists)
+     2. Build and push Docker image to ECR
+     3. Create/update ECS task definition
+     4. Create/update ECS service
+     5. Deploy the new task definition
 
 Your app will be available at your EC2 instance's public IP.
 
