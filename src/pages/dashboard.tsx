@@ -21,6 +21,7 @@ import { Card } from '../components/card';
 import { TransactionList } from '../components/transaction-list';
 import { fetchCards, fetchTransactions, fetchUsers } from '../lib/api';
 import { chartColors, barChartOptions, lineChartOptions, pieChartOptions } from '../lib/chart-theme';
+import OptimizedImage from '../components/OptimizedImage';
 
 ChartJS.register(
   CategoryScale,
@@ -255,10 +256,12 @@ const Dashboard = () => {
             <div className="flex items-center gap-4">
               {displayedContacts.map((contact) => (
                 <button key={contact.id} className="flex flex-col items-center gap-1">
-                  <img
+                  <OptimizedImage
                     src={contact.avatar}
                     alt={contact.name}
-                    className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover"
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover"
                   />
                   <div className="text-center">
                     <p className="text-xs md:text-sm font-medium">{contact.name}</p>
