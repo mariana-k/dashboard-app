@@ -78,7 +78,43 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
 
 #### Setup AWS Resources
 
-1. Create a key pair:
+1. Get AWS account info:
+   ```bash
+   # Get account ID
+   aws sts get-caller-identity --query Account --output text
+
+   # Get subnet ID
+   aws ec2 describe-subnets --query 'Subnets[0].SubnetId' --output text
+
+   # Get security group ID
+   aws ec2 describe-security-groups --group-names financial-dashboard-sg --query 'SecurityGroups[0].GroupId' --output text
+   ```
+
+2. Create ECS task execution role:
+   ```bash
+   # Create role
+   aws iam create-role \
+     --role-name ecsTaskExecutionRole \
+     --assume-role-policy-document '{
+       "Version": "2012-10-17",
+       "Statement": [
+         {
+           "Effect": "Allow",
+           "Principal": {
+             "Service": "ecs-tasks.amazonaws.com"
+           },
+           "Action": "sts:AssumeRole"
+         }
+       ]
+     }'
+
+   # Attach policy
+   aws iam attach-role-policy \
+     --role-name ecsTaskExecutionRole \
+     --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+   ```
+
+3. Create a key pair:
    ```bash
    aws ec2 create-key-pair \
      --key-name financial-dashboard-key \
@@ -87,7 +123,7 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
    chmod 400 financial-dashboard-key.pem
    ```
 
-2. Create security group:
+4. Create security group:
    ```bash
    # Create security group
    aws ec2 create-security-group \
@@ -116,7 +152,7 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --cidr 0.0.0.0/0
    ```
 
-3. Get latest Amazon Linux 2 AMI ID:
+5. Get latest Amazon Linux 2 AMI ID:
    ```bash
    aws ec2 describe-images \
      --owners amazon \
@@ -125,7 +161,7 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --output text
    ```
 
-4. Launch EC2 instance:
+6. Launch EC2 instance:
    ```bash
    aws ec2 run-instances \
      --image-id <AMI_ID_FROM_PREVIOUS_COMMAND> \
@@ -135,26 +171,69 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --security-groups financial-dashboard-sg
    ```
 
-5. Create ECR repository:
+7. Create ECR repository:
    ```bash
    aws ecr create-repository \
      --repository-name financial-dashboard \
      --region us-east-1
    ```
 
-6. Get ECR repository URI:
+8. Create ECS cluster:
    ```bash
-   aws ecr describe-repositories \
-     --repository-names financial-dashboard \
-     --region us-east-1 \
-     --query 'repositories[0].repositoryUri' \
-     --output text
+   aws ecs create-cluster \
+     --cluster-name financial-dashboard-cluster \
+     --region us-east-1
    ```
 
-7. Login to ECR:
+9. Create ECS task definition:
    ```bash
-   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <REPOSITORY_URI>
+   aws ecs register-task-definition \
+     --family financial-dashboard-task \
+     --network-mode awsvpc \
+     --requires-compatibilities FARGATE \
+     --cpu 256 \
+     --memory 512 \
+     --execution-role-arn arn:aws:iam::<YOUR_ACCOUNT_ID>:role/ecsTaskExecutionRole \
+     --container-definitions '[
+       {
+         "name": "financial-dashboard",
+         "image": "<ECR_REPOSITORY_URI>",
+         "portMappings": [
+           {
+             "containerPort": 80,
+             "hostPort": 80,
+             "protocol": "tcp"
+           }
+         ],
+         "essential": true
+       }
+     ]'
    ```
+
+10. Create ECS service:
+    ```bash
+    aws ecs create-service \
+      --cluster financial-dashboard-cluster \
+      --service-name financial-dashboard-service \
+      --task-definition financial-dashboard-task \
+      --desired-count 1 \
+      --launch-type FARGATE \
+      --network-configuration "awsvpcConfiguration={subnets=[<SUBNET_ID>],securityGroups=[<SECURITY_GROUP_ID>],assignPublicIp=ENABLED}"
+    ```
+
+11. Get ECR repository URI:
+    ```bash
+    aws ecr describe-repositories \
+      --repository-names financial-dashboard \
+      --region us-east-1 \
+      --query 'repositories[0].repositoryUri' \
+      --output text
+    ```
+
+12. Login to ECR:
+    ```bash
+    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <REPOSITORY_URI>
+    ```
 
 #### Setup GitHub Secrets
 
