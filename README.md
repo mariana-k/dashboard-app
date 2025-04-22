@@ -48,7 +48,9 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
    ```
    The app will be available at http://localhost:80
 
-### AWS Deployment
+### AWS Deployment (ECS Fargate)
+
+We're using AWS ECS Fargate for deployment, which is a serverless container orchestration service. No EC2 instances are needed as AWS manages the underlying infrastructure.
 
 #### Prerequisites
 
@@ -114,34 +116,7 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
    ```
 
-3. Create ECS cluster manually:
-   ```bash
-   aws ecs create-cluster \
-     --cluster-name financial-dashboard-cluster \
-     --region us-east-1
-   ```
-
-4. Create ECS service manually:
-   ```bash
-   aws ecs create-service \
-     --cluster financial-dashboard-cluster \
-     --service-name financial-dashboard-service \
-     --task-definition financial-dashboard-task \
-     --desired-count 1 \
-     --launch-type FARGATE \
-     --network-configuration "awsvpcConfiguration={subnets=[YOUR_SUBNET_ID],securityGroups=[YOUR_SECURITY_GROUP_ID],assignPublicIp=ENABLED}"
-   ```
-
-5. Create a key pair:
-   ```bash
-   aws ec2 create-key-pair \
-     --key-name financial-dashboard-key \
-     --query 'KeyMaterial' \
-     --output text > financial-dashboard-key.pem
-   chmod 400 financial-dashboard-key.pem
-   ```
-
-6. Create security group:
+3. Create security group:
    ```bash
    # Create security group
    aws ec2 create-security-group \
@@ -161,79 +136,32 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
      --protocol tcp \
      --port 443 \
      --cidr 0.0.0.0/0
-
-   # Allow SSH access (optional)
-   aws ec2 authorize-security-group-ingress \
-     --group-name financial-dashboard-sg \
-     --protocol tcp \
-     --port 22 \
-     --cidr 0.0.0.0/0
    ```
 
-7. Get latest Amazon Linux 2 AMI ID:
-   ```bash
-   aws ec2 describe-images \
-     --owners amazon \
-     --filters "Name=name,Values=amzn2-ami-hvm-*-x86_64-gp2" \
-     --query 'sort_by(Images, &CreationDate)[-1].[ImageId]' \
-     --output text
-   ```
-
-8. Launch EC2 instance:
-   ```bash
-   aws ec2 run-instances \
-     --image-id <AMI_ID_FROM_PREVIOUS_COMMAND> \
-     --count 1 \
-     --instance-type t2.micro \
-     --key-name financial-dashboard-key \
-     --security-groups financial-dashboard-sg
-   ```
-
-9. Create ECR repository:
+4. Create ECR repository:
    ```bash
    aws ecr create-repository \
      --repository-name financial-dashboard \
      --region us-east-1
    ```
 
-10. Create ECS task definition:
-    ```bash
-    aws ecs register-task-definition \
-      --family financial-dashboard-task \
-      --network-mode awsvpc \
-      --requires-compatibilities FARGATE \
-      --cpu 256 \
-      --memory 512 \
-      --execution-role-arn arn:aws:iam::<YOUR_ACCOUNT_ID>:role/ecsTaskExecutionRole \
-      --container-definitions '[
-        {
-          "name": "financial-dashboard",
-          "image": "<ECR_REPOSITORY_URI>",
-          "portMappings": [
-            {
-              "containerPort": 80,
-              "hostPort": 80,
-              "protocol": "tcp"
-            }
-          ],
-          "essential": true
-        }
-      ]'
-    ```
+5. Create ECS cluster:
+   ```bash
+   aws ecs create-cluster \
+     --cluster-name financial-dashboard-cluster \
+     --region us-east-1
+   ```
 
-11. Get ECR repository URI:
-    ```bash
-    aws ecr describe-repositories \
-      --repository-names financial-dashboard \
-      --region us-east-1 \
-      --query 'repositories[0].repositoryUri' \
-      --output text
-    ```
-
-12. Login to ECR:
-    ```bash
-    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <REPOSITORY_URI>
-    ```
+6. Create ECS service:
+   ```bash
+   aws ecs create-service \
+     --cluster financial-dashboard-cluster \
+     --service-name financial-dashboard-service \
+     --task-definition financial-dashboard-task \
+     --desired-count 1 \
+     --launch-type FARGATE \
+     --network-configuration "awsvpcConfiguration={subnets=[YOUR_SUBNET_ID],securityGroups=[YOUR_SECURITY_GROUP_ID],assignPublicIp=ENABLED}"
+   ```
 
 #### Setup GitHub Secrets
 
@@ -268,13 +196,34 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
 2. Review and merge the PR:
    - The deployment will automatically start when the PR is merged to main
    - The GitHub Actions workflow will:
-     1. Create ECS cluster (if not exists)
-     2. Build and push Docker image to ECR
-     3. Create/update ECS task definition
-     4. Create/update ECS service
-     5. Deploy the new task definition
+     1. Build and push Docker image to ECR
+     2. Create/update ECS task definition
+     3. Deploy the new task definition
 
-Your app will be available at your EC2 instance's public IP.
+Your app will be available at the public IP of the Fargate task. To get the IP:
+
+#### Option 1: AWS Console
+1. Go to AWS Console → ECS
+2. Click on your cluster (`financial-dashboard-cluster`)
+3. Click on "Services" tab
+4. Click on your service (`financial-dashboard-service`)
+5. Click on "Tasks" tab
+6. Click on the running task
+7. In the "Network" section, you'll see the "Public IP" field
+
+#### Option 2: AWS CLI
+```bash
+# Get the task ARN
+TASK_ARN=$(aws ecs list-tasks --cluster financial-dashboard-cluster --service-name financial-dashboard-service --query 'taskArns[0]' --output text)
+
+# Get the network interface ID
+NETWORK_INTERFACE_ID=$(aws ecs describe-tasks --cluster financial-dashboard-cluster --tasks $TASK_ARN --query 'tasks[0].attachments[0].details[?name==`networkInterfaceId`].value' --output text)
+
+# Get the public IP
+aws ec2 describe-network-interfaces --network-interface-ids $NETWORK_INTERFACE_ID --query 'NetworkInterfaces[0].Association.PublicIp' --output text
+```
+
+Note: The IP might change if the task restarts. For a stable URL, you should set up an Application Load Balancer (ALB) with a domain name.
 
 ## Project Structure
 
