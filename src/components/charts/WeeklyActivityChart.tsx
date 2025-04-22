@@ -1,5 +1,5 @@
 import { Bar } from 'react-chartjs-2';
-import { barChartOptions } from '../../helpers/chart-theme';
+import { barChartOptions } from '../../lib/helpers/chart-theme';
 
 interface WeeklyActivityChartProps {
     data: {

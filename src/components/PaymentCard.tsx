@@ -1,4 +1,4 @@
-import { cn } from '../helpers/utils';
+import { cn } from '../lib/helpers/utils';
 
 interface CardProps {
   balance: number;
@@ -8,7 +8,7 @@ interface CardProps {
   variant?: 'dark' | 'light';
 }
 
-export function Card({ balance, cardHolder, number, expiryDate, variant = 'dark' }: CardProps) {
+export function PaymentCard({ balance, cardHolder, number, expiryDate, variant = 'dark' }: CardProps) {
   return (
     <div
       className={cn(

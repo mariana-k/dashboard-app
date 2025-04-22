@@ -1,5 +1,5 @@
 import { Line } from 'react-chartjs-2';
-import { lineChartOptions } from '../../helpers/chart-theme';
+import { lineChartOptions } from '../../lib/helpers/chart-theme';
 
 interface BalanceHistoryChartProps {
     data: {

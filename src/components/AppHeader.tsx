@@ -8,7 +8,7 @@ interface HeaderProps {
   onProfileClick: () => void;
 }
 
-export function Header({ title, onProfileClick }: HeaderProps) {
+export function AppHeader({ title, onProfileClick }: HeaderProps) {
   const profileImage = useRecoilValue(profileImageState);
 
   return (

@@ -1,5 +1,5 @@
 import { Camera, Bell, Lock, Palette } from 'lucide-react';
-import { cn } from '../../helpers/utils';
+import { cn } from '../../lib/helpers/utils';
 
 type Tab = {
     id: string;
