@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { cn } from '../helpers/utils';
+import { cn } from '../lib/helpers/utils';
 import {
   LayoutDashboard,
   Settings as SettingsIcon,
@@ -14,7 +14,7 @@ import {
   Menu,
   X,
 } from 'lucide-react';
-import { Header } from './AppHeader';
+import { AppHeader } from './AppHeader';
 import { profileImageState } from '../store/atoms';
 import { useState } from 'react';
 
@@ -22,7 +22,7 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-export function Layout({ children }: LayoutProps) {
+export function AppLayout({ children }: LayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const profileImage = useRecoilValue(profileImageState);
@@ -190,7 +190,7 @@ export function Layout({ children }: LayoutProps) {
 
         {/* Desktop header */}
         <div className="hidden md:block sticky top-0 z-40">
-          <Header title={getPageTitle()} onProfileClick={handleProfileClick} />
+          <AppHeader title={getPageTitle()} onProfileClick={handleProfileClick} />
         </div>
 
         {/* Page content */}

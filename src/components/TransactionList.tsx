@@ -1,6 +1,6 @@
-import { cn } from '../helpers/utils';
+import { cn } from '../lib/helpers/utils';
 import { Banknote, CreditCard, User } from 'lucide-react';
-import { formatCurrency, formatDate, getTransactionIcon } from '../helpers/utils';
+import { formatCurrency, formatDate, getTransactionIcon } from '../lib/helpers/utils';
 
 type TransactionListProps = {
   transactions: Transaction[];

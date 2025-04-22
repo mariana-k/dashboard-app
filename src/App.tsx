@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
-import { Layout } from './components/AppLayout';
+import { AppLayout } from './components/AppLayout';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 // Lazy load pages
@@ -20,7 +20,7 @@ const App = () => {
   return (
     <ErrorBoundary>
       <Router>
-        <Layout>
+        <AppLayout>
           <Suspense fallback={<Loading />}>
             <Routes>
               <Route path="/" element={<Dashboard />} />
@@ -29,7 +29,7 @@ const App = () => {
               <Route path="/settings" element={<Settings />} />
             </Routes>
           </Suspense>
-        </Layout>
+        </AppLayout>
       </Router>
     </ErrorBoundary>
   );
