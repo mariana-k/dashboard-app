@@ -22,7 +22,7 @@ export function PaymentCard({
       className={cn(
         'relative h-[13.75rem] w-[21.25rem] rounded-[1.25rem] p-6 pb-8 shrink-0',
         variant === 'dark'
-          ? 'bg-[#1E1E1E] text-white'
+          ? 'bg-gray-950 text-white'
           : 'bg-white text-gray-900 border border-gray-100'
       )}
       role="article"
