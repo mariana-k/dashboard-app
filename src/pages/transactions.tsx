@@ -20,7 +20,7 @@ const Transactions = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg md:text-xl font-semibold">All Transactions</h2>
+        <h2 className="text-lg lg:text-xl font-semibold">All Transactions</h2>
       </div>
       {transactions && <TransactionList transactions={transactions} />}
     </div>

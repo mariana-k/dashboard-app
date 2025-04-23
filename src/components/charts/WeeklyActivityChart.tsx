@@ -15,8 +15,13 @@ interface WeeklyActivityChartProps {
 
 export const WeeklyActivityChart = ({ data }: WeeklyActivityChartProps) => {
   return (
-    <div data-testid="weekly-activity-chart" className="h-[200px] ">
-      <Bar data={data} options={barChartOptions} />
+    <div>
+      <h2 className="text-lg lg:text-xl font-semibold mb-4">Weekly Activity</h2>
+      <div className="bg-white p-4 rounded-xl shadow-sm">
+        <div className="h-[200px]" data-testid="weekly-activity-chart">
+          <Bar data={data} options={barChartOptions} />
+        </div>
+      </div>
     </div>
   )
 }

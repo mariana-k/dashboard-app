@@ -17,8 +17,13 @@ interface BalanceHistoryChartProps {
 
 const BalanceHistoryChart = ({ data }: BalanceHistoryChartProps) => {
   return (
-    <div className="h-[200px] ">
-      <Line data={data} options={lineChartOptions} />
+    <div>
+      <h2 className="text-lg lg:text-xl font-semibold mb-4">Balance History</h2>
+      <div className="bg-white p-4 rounded-xl shadow-sm">
+        <div className="h-[200px]">
+          <Line data={data} options={lineChartOptions} />
+        </div>
+      </div>
     </div>
   )
 }

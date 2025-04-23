@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronRight, ChevronLeft } from 'lucide-react'
+import { ChevronRight, ChevronLeft, Send } from 'lucide-react'
 import { OptimizedImage } from './OptimizedImage'
 
 interface Contact {
@@ -16,68 +16,85 @@ interface QuickTransferProps {
 const QuickTransfer = ({ contacts }: QuickTransferProps) => {
   const [currentPage, setCurrentPage] = useState(0)
   const [selectedContact, setSelectedContact] = useState<string | null>(null)
+  const [amount, setAmount] = useState('525.50')
   const displayedContacts = contacts.slice(currentPage * 3, currentPage * 3 + 3)
   const hasNextPage = currentPage * 3 + 3 < contacts.length
   const hasPrevPage = currentPage > 0
 
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    // Allow empty input, numbers, and one decimal point with up to 2 decimal places
+    if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
+      setAmount(value)
+    }
+  }
+
   return (
-    <div className="bg-white p-4 rounded-xl shadow-sm">
-      <h2 className="text-lg md:text-xl font-semibold mb-4">Quick Transfer</h2>
-      <div className="space-y-6">
-        <div className="flex items-center gap-4">
-          {displayedContacts.map(contact => (
-            <button
-              key={contact.id}
-              onClick={() => setSelectedContact(contact.id)}
-              className={`flex flex-col items-center gap-1 ${selectedContact === contact.id ? 'ring-2 ring-primary' : ''}`}
-              aria-label={`Select ${contact.name}`}
-            >
-              <OptimizedImage
-                src={contact.avatar}
-                alt={contact.name}
-                width={48}
-                height={48}
-                className="rounded-full object-cover"
-              />
-              <div className="text-center">
-                <p className="text-xs md:text-sm font-medium">{contact.name}</p>
-                <p className="text-xs text-gray-500">{contact.role}</p>
-              </div>
-            </button>
-          ))}
-          <div className="flex gap-2">
+    <div>
+      <h2 className="text-lg lg:text-xl font-semibold mb-4">Quick Transfer</h2>
+      <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="h-[200px]">
+          <div className="flex items-center gap-4">
             {hasPrevPage && (
               <button
                 onClick={() => setCurrentPage(prev => prev - 1)}
-                className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors"
                 aria-label="Show previous contacts"
               >
-                <ChevronLeft className="w-5 h-5 text-gray-600" />
+                <ChevronLeft className="w-4 h-4 text-gray-600" />
               </button>
             )}
+            {displayedContacts.map(contact => (
+              <button
+                key={contact.id}
+                onClick={() => setSelectedContact(contact.id)}
+                className={`flex flex-col items-center ${selectedContact === contact.id ? 'ring-2 ring-primary' : ''}`}
+                aria-label={`Select ${contact.name}`}
+              >
+                <OptimizedImage
+                  src={contact.avatar}
+                  alt={contact.name}
+                  width={48}
+                  height={48}
+                  className="rounded-full object-cover mb-1.5"
+                />
+                <p className="text-sm font-semibold">{contact.name}</p>
+                <p className="text-xs text-[#6B7280]">{contact.role}</p>
+              </button>
+            ))}
             {hasNextPage && (
               <button
                 onClick={() => setCurrentPage(prev => prev + 1)}
-                className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors"
                 aria-label="Show next contacts"
               >
-                <ChevronRight className="w-5 h-5 text-gray-600" />
+                <ChevronRight className="w-4 h-4 text-gray-600" />
               </button>
             )}
           </div>
-        </div>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Write Amount"
-            className="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
-          />
-          <button className="px-4 md:px-6 py-2 bg-gray-900 text-white rounded-lg flex items-center gap-2 text-sm md:text-base">
-            Send
-            <span className="rotate-45">
-              <ChevronRight className="w-4 h-4" />
-            </span>
-          </button>
+          <div className="flex items-center gap-2 pt-6">
+            <label
+              htmlFor="amount"
+              className="text-sm text-[#6B7280] whitespace-nowrap font-medium"
+            >
+              Write Amount
+            </label>
+            <div className="relative flex-1 max-w-[200px]">
+              <input
+                id="amount"
+                type="text"
+                inputMode="decimal"
+                value={amount}
+                onChange={handleAmountChange}
+                placeholder="Enter amount"
+                className="w-full px-3 py-2 rounded-full bg-[#F8F9FE] text-[#1F2937] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-gray-400 pr-24"
+              />
+              <button className="absolute right-0 top-0 h-full px-4 bg-[#1F2937] text-white rounded-full flex items-center gap-1.5 font-medium hover:bg-black transition-colors shadow-lg">
+                <span className="text-sm">Send</span>
+                <Send className="w-4 h-4 rotate-[35deg]" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

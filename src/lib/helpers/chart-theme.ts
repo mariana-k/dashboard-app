@@ -1,7 +1,7 @@
-import { ChartOptions } from 'chart.js'
+import { Context } from 'chartjs-plugin-datalabels'
 
 export const chartColors = {
-  primary: '#4F46E5',
+  primary: '#4461F2',
   gray: '#1F2937',
   warning: '#F59E0B',
   grid: '#F3F4F6',
@@ -11,110 +11,162 @@ export const chartColors = {
     text: '#F9FAFB',
   },
   pie: {
-    entertainment: '#2C3E50',
-    billExpense: '#F97316',
-    investment: '#4F46E5',
+    entertainment: '#2B3147',
+    billExpense: '#F4833B',
+    investment: '#4461F2',
     others: '#1F2937',
   },
 }
 
-const commonOptions: ChartOptions<'bar' | 'line'> = {
+export const barChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      position: 'top',
-      align: 'start',
+      display: true,
+      position: 'top' as const,
+      align: 'end' as const,
       labels: {
-        boxWidth: 8,
-        boxHeight: 8,
         usePointStyle: true,
         pointStyle: 'circle',
+        boxWidth: 8,
+        boxHeight: 8,
         padding: 20,
-        color: chartColors.text,
+        color: '#6B7280',
         font: {
           size: 12,
-          family: 'system-ui, -apple-system, sans-serif',
+          family: 'system-ui',
         },
       },
     },
     tooltip: {
-      backgroundColor: chartColors.tooltip.background,
-      titleColor: chartColors.tooltip.text,
-      bodyColor: chartColors.tooltip.text,
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      titleFont: {
+        size: 14,
+        weight: 'bold' as const,
+      },
+      bodyFont: {
+        size: 12,
+      },
       padding: 12,
-      cornerRadius: 8,
-      displayColors: false,
+      cornerRadius: 4,
+    },
+    datalabels: {
+      display: false,
     },
   },
   scales: {
     x: {
-      type: 'category',
       grid: {
         display: false,
       },
-      border: {
-        display: false,
-      },
       ticks: {
-        color: chartColors.text,
+        color: '#6B7280',
         font: {
           size: 12,
-          family: 'system-ui, -apple-system, sans-serif',
+          family: 'system-ui',
         },
+      },
+      border: {
+        display: false,
       },
     },
     y: {
-      type: 'linear',
+      grid: {
+        color: '#F3F4F6',
+        drawBorder: false,
+      },
       border: {
         display: false,
-        dash: [4, 4],
-      },
-      grid: {
-        color: chartColors.grid,
-        drawTicks: false,
       },
       ticks: {
-        color: chartColors.text,
+        color: '#6B7280',
         font: {
           size: 12,
-          family: 'system-ui, -apple-system, sans-serif',
+          family: 'system-ui',
         },
         padding: 8,
+        stepSize: 100,
       },
-      beginAtZero: true,
+      min: 0,
+      max: 500,
     },
   },
+  barPercentage: 0.5,
+  categoryPercentage: 0.7,
 }
 
-export const barChartOptions: ChartOptions<'bar'> = {
-  ...commonOptions,
-  datasets: {
-    bar: {
-      categoryPercentage: 0.8,
-      barPercentage: 0.5,
-    },
-  },
-}
-
-export const lineChartOptions: ChartOptions<'line'> = {
-  ...commonOptions,
-  elements: {
-    line: {
-      tension: 0.4,
-    },
-  },
-}
-
-export const pieChartOptions: ChartOptions<'pie'> = {
+export const lineChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
       display: false,
+      position: 'top' as const,
     },
     tooltip: {
-      enabled: false,
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      titleFont: {
+        size: 14,
+        weight: 'bold' as const,
+      },
+      bodyFont: {
+        size: 12,
+      },
+      padding: 12,
+      cornerRadius: 4,
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      grid: {
+        color: '#E5E7EB',
+      },
+    },
+  },
+}
+
+export const pieChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  rotation: 35,
+
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      titleFont: {
+        size: 14,
+        weight: 'bold' as const,
+      },
+      bodyFont: {
+        size: 12,
+      },
+      padding: 12,
+      cornerRadius: 4,
+    },
+    datalabels: {
+      color: '#ffffff',
+      font: {
+        weight: 'bold' as const,
+        size: 10,
+        family: 'system-ui',
+      },
+      formatter: (value: number, context: Context) => {
+        const label = context?.chart?.data?.labels?.[context?.dataIndex]
+        return `${value}%\n${label}`
+      },
+      textAlign: 'center' as const,
+      anchor: 'center' as const,
+      align: 'center' as const,
+      clamp: true,
     },
   },
 }

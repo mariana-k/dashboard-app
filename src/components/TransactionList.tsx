@@ -20,11 +20,11 @@ export function TransactionList({ transactions }: TransactionListProps) {
     const iconType = getTransactionIcon(description)
     switch (iconType) {
       case 'card':
-        return <CreditCard className="w-4 h-4 md:w-5 md:h-5 text-blue-600" aria-hidden="true" />
+        return <CreditCard className="w-4 h-4 lg:w-5 lg:h-5 text-blue-600" aria-hidden="true" />
       case 'paypal':
-        return <Banknote className="w-4 h-4 md:w-5 md:h-5 text-blue-600" aria-hidden="true" />
+        return <Banknote className="w-4 h-4 lg:w-5 lg:h-5 text-blue-600" aria-hidden="true" />
       default:
-        return <User className="w-4 h-4 md:w-5 md:h-5 text-blue-600" aria-hidden="true" />
+        return <User className="w-4 h-4 lg:w-5 lg:h-5 text-blue-600" aria-hidden="true" />
     }
   }
 
@@ -36,20 +36,20 @@ export function TransactionList({ transactions }: TransactionListProps) {
           className="flex items-center m-4 justify-between bg-white"
           role="article"
         >
-          <div className="flex items-center gap-3 md:gap-4">
-            <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-blue-50 flex items-center justify-center">
+          <div className="flex items-center gap-3 lg:gap-4">
+            <div className="h-8 w-8 lg:h-10 lg:w-10 rounded-full bg-blue-50 flex items-center justify-center">
               {getIcon(transaction.description)}
             </div>
             <div>
-              <p className="text-sm md:text-base font-medium text-gray-900">
+              <p className="text-sm lg:text-base font-medium text-gray-900">
                 {transaction.description}
               </p>
-              <p className="text-xs md:text-sm text-gray-500">{formatDate(transaction.date)}</p>
+              <p className="text-xs lg:text-sm text-gray-500">{formatDate(transaction.date)}</p>
             </div>
           </div>
           <span
             className={cn(
-              'text-sm md:text-base font-medium',
+              'text-sm lg:text-base font-medium',
               transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
             )}
             aria-label={`${transaction.type === 'credit' ? 'Received' : 'Sent'} ${formatCurrency(transaction.amount)}`}
