@@ -184,7 +184,7 @@ const Dashboard = () => {
               See All
             </Link>
           </div>
-          <div className="bg-white rounded-xl p-2 shadow-sm">
+          <div className="bg-white rounded-xl shadow-sm">
             <div className="max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
               {transactions && <TransactionList transactions={transactions} />}
             </div>

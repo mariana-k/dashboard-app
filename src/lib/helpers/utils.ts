@@ -29,10 +29,10 @@ export const calculatePieChartLabelPosition = (
   chart:
     | Partial<Chart<ChartType>>
     | {
-      getDatasetMeta: (index: number) => {
-        data: { x: number; y: number; outerRadius: number }[]
+        getDatasetMeta: (index: number) => {
+          data: { x: number; y: number; outerRadius: number }[]
+        }
       }
-    }
 ): { x: number; y: number } => {
   const sliceAngle = (value / total) * 2 * Math.PI
   const middleAngle = currentAngle + sliceAngle / 2
