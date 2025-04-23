@@ -109,7 +109,7 @@ export default {
         none: 'var(--radius-none)',
         sm: 'var(--radius-sm)',
         DEFAULT: 'var(--radius-base)',
-        md: 'var(--radius-md)',
+        lg: 'var(--radius-md)',
         lg: 'var(--radius-lg)',
         xl: 'var(--radius-xl)',
         '2xl': 'var(--radius-2xl)',
@@ -119,7 +119,7 @@ export default {
       boxShadow: {
         sm: 'var(--shadow-sm)',
         DEFAULT: 'var(--shadow-base)',
-        md: 'var(--shadow-md)',
+        lg: 'var(--shadow-md)',
         lg: 'var(--shadow-lg)',
         xl: 'var(--shadow-xl)',
       },

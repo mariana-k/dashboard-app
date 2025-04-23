@@ -5,15 +5,15 @@ import React from 'react'
 
 describe('QuickTransfer', () => {
   const mockContacts = [
-    { id: '1', name: 'John Doe', avatar: 'https://i.pravatar.cc/150?img=1', role: 'user' },
-    { id: '2', name: 'Jane Smith', avatar: 'https://i.pravatar.cc/150?img=2', role: 'user' },
+    { id: '1', name: 'John Doe', avatar: 'https://i.pravatar.cc/150?img=1', role: 'User' },
+    { id: '2', name: 'Jane Smith', avatar: 'https://i.pravatar.cc/150?img=2', role: 'User' },
   ]
 
   it('renders transfer form with correct elements', () => {
     render(<QuickTransfer contacts={mockContacts} />)
 
     expect(screen.getByText('Quick Transfer')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('Write Amount')).toBeInTheDocument()
+    expect(screen.getByLabelText('Write Amount')).toBeInTheDocument()
     expect(screen.getByText('Send')).toBeInTheDocument()
   })
 
@@ -21,13 +21,19 @@ describe('QuickTransfer', () => {
     render(<QuickTransfer contacts={mockContacts} />)
 
     mockContacts.forEach(contact => {
-      expect(screen.getByText(contact.name)).toBeInTheDocument()
+      const nameElement = screen.getByText(contact.name)
+      expect(nameElement).toBeInTheDocument()
+      expect(nameElement.nextElementSibling).toHaveTextContent(contact.role)
+
+      const contactButton = nameElement.closest('button')
+      expect(contactButton).toBeInTheDocument()
+      expect(contactButton).toHaveAttribute('aria-label', `Select ${contact.name}`)
     })
   })
 
   it('handles amount input correctly', () => {
     render(<QuickTransfer contacts={mockContacts} />)
-    const amountInput = screen.getByPlaceholderText('Write Amount')
+    const amountInput = screen.getByLabelText('Write Amount')
 
     fireEvent.change(amountInput, { target: { value: '100' } })
     expect(amountInput).toHaveValue('100')
@@ -35,11 +41,13 @@ describe('QuickTransfer', () => {
 
   it('handles contact selection correctly', () => {
     render(<QuickTransfer contacts={mockContacts} />)
-    const firstContactButton = screen.getByRole('button', {
-      name: `Select ${mockContacts[0].name}`,
-    })
+    const firstContact = screen.getByText(mockContacts[0].name)
+    const contactButton = firstContact.closest('button')
 
-    fireEvent.click(firstContactButton)
-    expect(firstContactButton).toHaveClass('ring-2 ring-primary')
+    if (!contactButton) throw new Error('Contact button not found')
+
+    fireEvent.click(contactButton)
+    expect(contactButton).toHaveClass('ring-2')
+    expect(contactButton).toHaveClass('ring-primary')
   })
 })
