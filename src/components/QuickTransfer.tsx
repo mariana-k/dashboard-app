@@ -73,10 +73,7 @@ const QuickTransfer = ({ contacts }: QuickTransferProps) => {
             )}
           </div>
           <div className="flex items-center gap-2 pt-6">
-            <label
-              htmlFor="amount"
-              className="text-sm text-gray-500 whitespace-nowrap font-medium"
-            >
+            <label htmlFor="amount" className="text-sm text-gray-500 whitespace-nowrap font-medium">
               Write Amount
             </label>
             <div className="relative flex-1 max-w-[200px]">
