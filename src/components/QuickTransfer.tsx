@@ -59,7 +59,7 @@ const QuickTransfer = ({ contacts }: QuickTransferProps) => {
                   className="rounded-full object-cover mb-1.5"
                 />
                 <p className="text-sm font-semibold">{contact.name}</p>
-                <p className="text-xs text-[#6B7280]">{contact.role}</p>
+                <p className="text-xs text-gray-500">{contact.role}</p>
               </button>
             ))}
             {hasNextPage && (
@@ -73,10 +73,7 @@ const QuickTransfer = ({ contacts }: QuickTransferProps) => {
             )}
           </div>
           <div className="flex items-center gap-2 pt-6">
-            <label
-              htmlFor="amount"
-              className="text-sm text-[#6B7280] whitespace-nowrap font-medium"
-            >
+            <label htmlFor="amount" className="text-sm text-gray-500 whitespace-nowrap font-medium">
               Write Amount
             </label>
             <div className="relative flex-1 max-w-[200px]">
@@ -87,9 +84,9 @@ const QuickTransfer = ({ contacts }: QuickTransferProps) => {
                 value={amount}
                 onChange={handleAmountChange}
                 placeholder="Enter amount"
-                className="w-full px-3 py-2 rounded-full bg-[#F8F9FE] text-[#1F2937] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-gray-400 pr-24"
+                className="w-full px-3 py-2 rounded-full bg-gray-50 text-gray-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-gray-400 pr-24"
               />
-              <button className="absolute right-0 top-0 h-full px-4 bg-[#1F2937] text-white rounded-full flex items-center gap-1.5 font-medium hover:bg-black transition-colors shadow-lg">
+              <button className="absolute right-0 top-0 h-full px-4 bg-gray-900 text-white rounded-full flex items-center gap-1.5 font-medium hover:bg-gray-950 transition-colors shadow-lg">
                 <span className="text-sm">Send</span>
                 <Send className="w-4 h-4 rotate-[35deg]" />
               </button>
