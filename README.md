@@ -5,6 +5,11 @@ A modern, responsive financial dashboard built with React, TypeScript, and Tailw
 ## Live Demo
 Check out the live demo at [https://dashboard-app-two-phi.vercel.app/](https://dashboard-app-two-phi.vercel.app/)
 
+<img width="500" alt="Screenshot 2025-04-23 at 14 58 57" src="https://github.com/user-attachments/assets/8c8f1888-b53c-4405-bf23-43c53653ac7e" />
+<img width="500" alt="Screenshot 2025-04-23 at 14 58 57" src="https://github.com/user-attachments/assets/e243693a-0b47-453f-8716-397c683d417e" />
+
+
+
 ## Tech Stack
 
 - React 18
