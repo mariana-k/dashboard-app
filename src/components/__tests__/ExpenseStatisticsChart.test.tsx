@@ -25,9 +25,7 @@ describe('ExpenseStatisticsChart', () => {
   it('renders chart container with correct height classes', () => {
     render(<ExpenseStatisticsChart data={mockData} />)
     const container = screen.getByTestId('expense-statistics-chart')
-    expect(container).toHaveClass(
-      'relative h-[300px] md:h-[400px] flex items-center justify-center'
-    )
+    expect(container).toHaveClass('relative h-[200px]  flex items-center justify-center')
   })
 
   it('renders chart with correct data', () => {

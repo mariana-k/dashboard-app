@@ -30,7 +30,7 @@ describe('WeeklyActivityChart', () => {
   it('renders chart container with correct height classes', () => {
     render(<WeeklyActivityChart data={mockData} />)
     const container = screen.getByTestId('weekly-activity-chart')
-    expect(container).toHaveClass('h-[300px] md:h-[400px]')
+    expect(container).toHaveClass('h-[200px] ')
   })
 
   it('renders chart with correct data', () => {

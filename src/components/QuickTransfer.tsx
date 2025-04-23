@@ -21,7 +21,7 @@ const QuickTransfer = ({ contacts }: QuickTransferProps) => {
   const hasPrevPage = currentPage > 0
 
   return (
-    <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+    <div className="bg-white p-4 rounded-xl shadow-sm">
       <h2 className="text-lg md:text-xl font-semibold mb-4">Quick Transfer</h2>
       <div className="space-y-6">
         <div className="flex items-center gap-4">

@@ -29,11 +29,11 @@ export function TransactionList({ transactions }: TransactionListProps) {
   }
 
   return (
-    <div className="space-y-3 md:space-y-4" role="feed" aria-label="Recent transactions">
+    <div role="feed" aria-label="Recent transactions">
       {transactions.map(transaction => (
         <div
           key={transaction.id}
-          className="flex items-center justify-between bg-white p-3 md:p-4 rounded-lg shadow-sm"
+          className="flex items-center m-4 justify-between bg-white"
           role="article"
         >
           <div className="flex items-center gap-3 md:gap-4">

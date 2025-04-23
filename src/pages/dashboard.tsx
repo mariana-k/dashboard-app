@@ -199,28 +199,28 @@ const Dashboard = () => {
               See All
             </Link>
           </div>
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <div className="max-h-[400px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+          <div className="bg-white rounded-xl p-2 shadow-sm">
+            <div className="max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
               {transactions && <TransactionList transactions={transactions} />}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
         {/* Weekly Activity Section */}
-        <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+        <div className="bg-white p-4 rounded-xl shadow-sm">
           <h2 className="text-lg md:text-xl font-semibold mb-4">Weekly Activity</h2>
-          <div className="h-[300px] md:h-[400px]">
+          <div className="h-[200px] ">
             <Bar data={weeklyActivityData} options={customBarChartOptions} />
           </div>
         </div>
 
         {/* Expense Statistics Section */}
-        <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+        <div className="bg-white p-4 rounded-xl shadow-sm">
           <h2 className="text-lg md:text-xl font-semibold mb-4">Expense Statistics</h2>
-          <div className="relative h-[300px] md:h-[400px] flex items-center justify-center">
-            <div className="w-full max-w-[280px] aspect-square">
+          <div className="relative flex items-center justify-center">
+            <div className="w-full h-[200px]">
               <Pie
                 ref={pieChartRef}
                 data={expenseData}
@@ -265,7 +265,7 @@ const Dashboard = () => {
         </div>
 
         {/* Quick Transfer Section */}
-        <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+        <div className="bg-white p-4 rounded-xl shadow-sm">
           <h2 className="text-lg md:text-xl font-semibold mb-4">Quick Transfer</h2>
           <div className="space-y-6">
             <div className="flex items-center gap-4">
@@ -320,9 +320,9 @@ const Dashboard = () => {
         </div>
 
         {/* Balance History Section */}
-        <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+        <div className="bg-white p-4 rounded-xl shadow-sm">
           <h2 className="text-lg md:text-xl font-semibold mb-4">Balance History</h2>
-          <div className="h-[300px] md:h-[400px]">
+          <div className="h-[200px] ">
             <Line data={balanceHistoryData} options={lineChartOptions} />
           </div>
         </div>

@@ -17,7 +17,7 @@ interface BalanceHistoryChartProps {
 
 const BalanceHistoryChart = ({ data }: BalanceHistoryChartProps) => {
   return (
-    <div className="h-[300px] md:h-[400px]">
+    <div className="h-[200px] ">
       <Line data={data} options={lineChartOptions} />
     </div>
   )
