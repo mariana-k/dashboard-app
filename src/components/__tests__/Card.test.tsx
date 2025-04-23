@@ -23,7 +23,7 @@ describe('Card Component', () => {
   it('applies dark theme by default', () => {
     render(<PaymentCard {...defaultProps} />)
     const card = screen.getByRole('article')
-    expect(card).toHaveClass('bg-[#1E1E1E]')
+    expect(card).toHaveClass('bg-gray-950')
   })
 
   it('applies light theme when specified', () => {
