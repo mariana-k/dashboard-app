@@ -29,7 +29,7 @@ export async function fetchCards(): Promise<Card[]> {
   return [
     {
       id: '1',
-      number: '3778 **** **** 1234',
+      number: '4242424212344242',
       balance: 5756.0,
       cardHolder: 'Eddy Cusuma',
       expiryDate: '12/22',
@@ -37,7 +37,7 @@ export async function fetchCards(): Promise<Card[]> {
     },
     {
       id: '2',
-      number: '3778 **** **** 1234',
+      number: '5555555555554444',
       balance: 5756.0,
       cardHolder: 'Eddy Cusuma',
       expiryDate: '12/22',
