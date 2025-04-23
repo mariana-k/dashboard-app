@@ -33,10 +33,10 @@ export function TransactionList({ transactions }: TransactionListProps) {
       {transactions.map(transaction => (
         <div
           key={transaction.id}
-          className="flex items-center m-4 justify-between bg-white"
+          className="flex items-center justify-between bg-white rounded-lg m-2"
           role="article"
         >
-          <div className="flex items-center gap-3 lg:gap-4">
+          <div className="flex items-center gap-3 lg:gap-4 p-2">
             <div className="h-8 w-8 lg:h-10 lg:w-10 rounded-full bg-blue-50 flex items-center justify-center">
               {getIcon(transaction.description)}
             </div>
@@ -49,7 +49,7 @@ export function TransactionList({ transactions }: TransactionListProps) {
           </div>
           <span
             className={cn(
-              'text-sm lg:text-base font-medium',
+              'text-sm lg:text-base font-medium p-2',
               transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
             )}
             aria-label={`${transaction.type === 'credit' ? 'Received' : 'Sent'} ${formatCurrency(transaction.amount)}`}

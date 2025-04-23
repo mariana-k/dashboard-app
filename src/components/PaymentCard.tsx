@@ -1,4 +1,4 @@
-import { cn } from '../lib/helpers/utils'
+import { cn, maskCardNumber } from '../lib/helpers/utils'
 
 interface CardProps {
   balance: number
@@ -15,6 +15,8 @@ export function PaymentCard({
   expiryDate,
   variant = 'dark',
 }: CardProps) {
+  const maskedNumber = maskCardNumber(number)
+
   return (
     <div
       className={cn(
@@ -42,7 +44,7 @@ export function PaymentCard({
             )}
             aria-label={`Card number: ${number}`}
           >
-            {number}
+            {maskedNumber}
           </p>
 
           <div className="flex justify-between items-end">

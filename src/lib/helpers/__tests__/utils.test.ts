@@ -4,6 +4,7 @@ import {
   formatCurrency,
   formatDate,
   getTransactionIcon,
+  maskCardNumber,
 } from '../utils'
 
 describe('cn utility function', () => {
@@ -85,5 +86,17 @@ describe('getTransactionIcon', () => {
 
   it('returns user icon for other transactions', () => {
     expect(getTransactionIcon('Jemi Wilson')).toBe('user')
+  })
+})
+
+describe('maskCardNumber', () => {
+  it('masks middle 8 digits of card number', () => {
+    expect(maskCardNumber('4242424212344242')).toBe('4242 **** **** 4242')
+    expect(maskCardNumber('4242 4242 1234 4242')).toBe('4242 **** **** 4242')
+  })
+
+  it('handles card numbers with different formats', () => {
+    expect(maskCardNumber('4242-4242-1234-4242')).toBe('4242 **** **** 4242')
+    expect(maskCardNumber('4242.4242.1234.4242')).toBe('4242 **** **** 4242')
   })
 })

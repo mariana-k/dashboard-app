@@ -56,3 +56,11 @@ export const getTransactionIcon = (description: string): string => {
   }
   return 'user'
 }
+
+export const maskCardNumber = (cardNumber: string): string => {
+  // Remove any spaces from the card number
+  const cleaned = cardNumber.replace(/\s/g, '')
+  // Keep first 4 and last 4 digits, mask the rest
+  const masked = cleaned.slice(0, 4) + ' **** **** ' + cleaned.slice(-4)
+  return masked
+}
