@@ -4,7 +4,8 @@
         "composite": true,
         "types": [
             "jest",
-            "@testing-library/jest-dom"
+            "@testing-library/jest-dom",
+            "node"
         ],
         "esModuleInterop": true,
         "jsx": "react-jsx",
@@ -12,8 +13,9 @@
         "moduleResolution": "bundler"
     },
     "include": [
-        "src/**/*.test.ts",
-        "src/**/*.test.tsx",
+        "src/**/*",
+        "src/**/*.ts",
+        "src/**/*.tsx",
         "src/setupTests.d.ts"
     ]
 }

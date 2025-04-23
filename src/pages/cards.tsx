@@ -14,7 +14,7 @@ const Cards = () => {
         <h1 className="text-xl font-semibold text-gray-900">My Cards</h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {cards?.map(card => (
           <PaymentCard
             key={card.id}

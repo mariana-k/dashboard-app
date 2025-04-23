@@ -5,7 +5,7 @@ import React from 'react'
 
 // Mock react-chartjs-2
 jest.mock('react-chartjs-2', () => ({
-  Pie: () => <div data-testid="mock-pie-chart" />,
+  Pie: ({ data }) => <div data-testid="mock-pie-chart" data-chart-data={JSON.stringify(data)} />,
 }))
 
 describe('ExpenseStatisticsChart', () => {
@@ -14,26 +14,26 @@ describe('ExpenseStatisticsChart', () => {
     datasets: [
       {
         data: [30, 15, 20, 35],
-        backgroundColor: ['#4F46E5', '#1F2937', '#10B981', '#F59E0B'],
+        backgroundColor: ['#312E81', '#F97316', '#4F46E5', '#1F2937'],
         borderColor: '#ffffff',
-        borderWidth: 2,
-        offset: [20, 35, 25, 30],
+        borderWidth: 5,
       },
     ],
   }
 
-  it('renders chart container with correct height classes', () => {
+  it('renders chart title correctly', () => {
     render(<ExpenseStatisticsChart data={mockData} />)
-    const container = screen.getByTestId('expense-statistics-chart')
-    expect(container).toHaveClass(
-      'relative h-[300px] md:h-[400px] flex items-center justify-center'
-    )
+    expect(screen.getByText('Expense Statistics')).toBeInTheDocument()
   })
 
   it('renders chart with correct data', () => {
     render(<ExpenseStatisticsChart data={mockData} />)
-    const chart = screen.getByTestId('expense-statistics-chart')
+
+    const chart = screen.getByTestId('mock-pie-chart')
     expect(chart).toBeInTheDocument()
-    expect(screen.getByTestId('mock-pie-chart')).toBeInTheDocument()
+
+    // Verify the data passed to the Pie component
+    const chartData = JSON.parse(chart.getAttribute('data-chart-data') || '{}')
+    expect(chartData).toEqual(mockData)
   })
 })
