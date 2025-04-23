@@ -29,10 +29,10 @@ export const calculatePieChartLabelPosition = (
   chart:
     | Partial<Chart<ChartType>>
     | {
-        getDatasetMeta: (index: number) => {
-          data: { x: number; y: number; outerRadius: number }[]
-        }
+      getDatasetMeta: (index: number) => {
+        data: { x: number; y: number; outerRadius: number }[]
       }
+    }
 ): { x: number; y: number } => {
   const sliceAngle = (value / total) * 2 * Math.PI
   const middleAngle = currentAngle + sliceAngle / 2
@@ -55,4 +55,12 @@ export const getTransactionIcon = (description: string): string => {
     return 'paypal'
   }
   return 'user'
+}
+
+export const maskCardNumber = (cardNumber: string): string => {
+  // Remove any spaces from the card number
+  const cleaned = cardNumber.replace(/\s/g, '')
+  // Keep first 4 and last 4 digits, mask the rest
+  const masked = cleaned.slice(0, 4) + ' **** **** ' + cleaned.slice(-4)
+  return masked
 }
