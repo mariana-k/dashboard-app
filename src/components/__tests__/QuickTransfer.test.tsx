@@ -27,7 +27,7 @@ describe('QuickTransfer', () => {
 
       const contactButton = nameElement.closest('button')
       expect(contactButton).toBeInTheDocument()
-      expect(contactButton).toHaveAttribute('aria-label', `Select ${contact.name}`)
+      expect(contactButton).toHaveAttribute('aria-label', `Select ${contact.name}, ${contact.role}`)
     })
   })
 

@@ -66,8 +66,8 @@ const QuickTransfer = ({ contacts, onTransfer }: QuickTransferProps) => {
     }
   }, [selectedContact, amount, onTransfer])
 
-  const isTransferDisabled = useMemo(() =>
-    !selectedContact || !amount || isLoading,
+  const isTransferDisabled = useMemo(
+    () => !selectedContact || !amount || isLoading,
     [selectedContact, amount, isLoading]
   )
 
